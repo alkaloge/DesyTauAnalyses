@@ -147,6 +147,7 @@ using namespace reco;
 #define M_photonmaxcount 1000
 #define M_conversionmaxcount 1000
 #define M_jetmaxcount 1000
+#define M_mvametmaxcount 100
 #define M_genparticlesmaxcount 1000
 #define M_trigobjectmaxcount 1000
 typedef ROOT::Math::PositionVector3D<ROOT::Math::Cartesian3D<double>,ROOT::Math::DefaultCoordinateSystemTag> Point3D;
@@ -215,6 +216,7 @@ class NTupleMaker : public edm::EDAnalyzer{
   bool crecphoton;
   bool crecpfjet;
   bool crecpfmet;
+  bool crecmvamet;
 
   vector<string> cHLTriggerPaths;
   string cTriggerProcess;
@@ -256,6 +258,7 @@ class NTupleMaker : public edm::EDAnalyzer{
   edm::InputTag TauCollectionTag_;
   edm::InputTag JetCollectionTag_;
   edm::InputTag MetCollectionTag_;
+  std::vector<edm::InputTag> MvaMetCollectionsTag_;
   edm::InputTag TrackCollectionTag_;
   edm::InputTag GenParticleCollectionTag_;
   edm::InputTag TriggerObjectCollectionTag_;
@@ -641,6 +644,16 @@ class NTupleMaker : public edm::EDAnalyzer{
   Float_t pfmet_sigxy;
   Float_t pfmet_sigyx;
   Float_t pfmet_sigyy;
+
+  UInt_t mvamet_count;
+  Float_t mvamet_ex[M_mvametmaxcount];
+  Float_t mvamet_ey[M_mvametmaxcount];
+
+  Float_t mvamet_sigxx[M_mvametmaxcount];
+  Float_t mvamet_sigxy[M_mvametmaxcount];
+  Float_t mvamet_sigyx[M_mvametmaxcount];
+  Float_t mvamet_sigyy[M_mvametmaxcount];
+  string  mvamet_channel[M_mvametmaxcount];
 
   Float_t genmet_ex;
   Float_t genmet_ey;

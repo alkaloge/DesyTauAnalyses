@@ -72,6 +72,7 @@ NTupleMaker::NTupleMaker(const edm::ParameterSet& iConfig) :
   crecphoton(iConfig.getUntrackedParameter<bool>("RecPhoton", false)),
   crecpfjet(iConfig.getUntrackedParameter<bool>("RecJet", false)),
   crecpfmet(iConfig.getUntrackedParameter<bool>("RecPFMet", false)),
+  crecmvamet(iConfig.getUntrackedParameter<bool>("RecMvaMet", false)),
   // triggers
   cHLTriggerPaths(iConfig.getUntrackedParameter<vector<string> >("HLTriggerPaths")),
   cTriggerProcess(iConfig.getUntrackedParameter<string>("TriggerProcess", "HLT")),
@@ -113,6 +114,7 @@ NTupleMaker::NTupleMaker(const edm::ParameterSet& iConfig) :
   TauCollectionTag_(iConfig.getParameter<edm::InputTag>("TauCollectionTag")),
   JetCollectionTag_(iConfig.getParameter<edm::InputTag>("JetCollectionTag")),
   MetCollectionTag_(iConfig.getParameter<edm::InputTag>("MetCollectionTag")),
+  MvaMetCollectionsTag_(iConfig.getParameter<std::vector<edm::InputTag> >("MvaMetCollectionsTag")),
   TrackCollectionTag_(iConfig.getParameter<edm::InputTag>("TrackCollectionTag")),
   GenParticleCollectionTag_(iConfig.getParameter<edm::InputTag>("GenParticleCollectionTag")),
   TriggerObjectCollectionTag_(iConfig.getParameter<edm::InputTag>("TriggerObjectCollectionTag")),
@@ -509,6 +511,17 @@ void NTupleMaker::beginJob(){
     
     tree->Branch("genmet_ex", &genmet_ex, "genmet_ex/F");
     tree->Branch("genmet_ey", &genmet_ey, "genmet_ey/F");
+  }
+
+  if (crecmvamet) {
+    tree->Branch("mvamet_count", &mvamet_count, "mvamet_count/i");
+    tree->Branch("mvamet_ex", mvamet_ex, "mvamet_ex[mvamet_count]/F");
+    tree->Branch("mvamet_ey", mvamet_ey, "mvamet_ey[mvamet_count]/F");
+    tree->Branch("mvamet_sigxx", mvamet_sigxx, "mvamet_sigxx[mvamet_count]/F");
+    tree->Branch("mvamet_sigxy", mvamet_sigxy, "mvamet_sigxy[mvamet_count]/F");
+    tree->Branch("mvamet_sigyx", mvamet_sigyx, "mvamet_sigyx[mvamet_count]/F");
+    tree->Branch("mvamet_sigyy", mvamet_sigyy, "mvamet_sigyy[mvamet_count]/F");
+    tree->Branch("mvamet_channel", mvamet_channel, "mvamet_channel[mvamet_count]/C");
   }
 
   // generator info
@@ -942,6 +955,7 @@ void NTupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
   genparticles_count = 0;
   errors = 0;
   trigobject_count = 0;
+  mvamet_count = 0;
 
   bool takeevent = true;
 
@@ -1161,6 +1175,38 @@ void NTupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 	genmet_ey = genMET->py();
       }
     } // crecpfmet
+
+  if(crecmvamet)
+    {
+      //collect Mets
+      for(std::vector<edm::InputTag>::iterator mit = MvaMetCollectionsTag_.begin();
+	  mit != MvaMetCollectionsTag_.end(); mit++){
+
+	TString rawtag=mit->label();
+	rawtag.ReplaceAll("patMvaMet","");
+	std::string tag(rawtag);
+
+	edm::Handle<pat::METCollection> imets;
+	try{
+	  iEvent.getByLabel(*mit, imets);
+	}catch(std::exception &e){
+	  continue;
+	}
+	if(!imets.isValid()) continue;
+	if(imets->size() == 0)continue;
+
+	mvamet_ex[mvamet_count] = (*imets)[0].px();
+	mvamet_ey[mvamet_count] = (*imets)[0].py();
+
+	mvamet_sigxx[mvamet_count] = (*imets)[0].getSignificanceMatrix()(0,0);
+	mvamet_sigxy[mvamet_count] = (*imets)[0].getSignificanceMatrix()(0,1);
+	mvamet_sigyx[mvamet_count] = (*imets)[0].getSignificanceMatrix()(1,0);
+	mvamet_sigyy[mvamet_count] = (*imets)[0].getSignificanceMatrix()(1,1);
+
+	mvamet_channel[mvamet_count] = tag;
+	mvamet_count++;
+      }
+    }// crecmvamet
 
   // rho neutral
   edm::Handle<double> rho;
@@ -1504,6 +1550,11 @@ bool NTupleMaker::AddGenParticles(const edm::Event& iEvent) {
 		//		 	  << "   status = " << (*GenParticles)[i].status() << std::endl;
 	      }
 	    }
+	  //Save Higgs bosons
+	  else if(abs((*GenParticles)[i].pdgId()) == 25 || abs((*GenParticles)[i].pdgId()) == 35 ||
+		  abs((*GenParticles)[i].pdgId()) == 36){
+	    fill = true;
+	  }
 	  if(fill)
 	    {
 	      genparticles_e[genparticles_count] = (*GenParticles)[i].energy();
