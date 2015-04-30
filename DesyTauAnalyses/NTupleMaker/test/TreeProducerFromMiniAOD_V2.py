@@ -132,7 +132,7 @@ process.tauPreSelectionTauMu = cms.EDFilter("PATTauSelector",
 
 process.muonPreSelectionMuEle = cms.EDFilter("PATMuonSelector",
     src = cms.InputTag("slimmedMuons"),
-    cut = cms.string('pt > 20. && abs(eta) < 2.5 && isPFMuon && (isGlobalMuon || isTrackerMuon)')
+    cut = cms.string('pt > 9. && abs(eta) < 2.5 && isPFMuon && (isGlobalMuon || isTrackerMuon)')
 )
  
  
@@ -143,7 +143,7 @@ process.muonPreSelectionTauMu = cms.EDFilter("PATMuonSelector",
 
 process.electronPreSelectionMuEle = cms.EDFilter("PATElectronSelector",
     src = cms.InputTag("slimmedElectrons"),
-    cut = cms.string('pt > 20. && abs(eta) < 2.5')
+    cut = cms.string('pt > 13. && abs(eta) < 2.5')
 )
  
  
