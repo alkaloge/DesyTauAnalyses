@@ -28,7 +28,7 @@
 #include "SimDataFormats/GeneratorProducts/interface/LHEEventProduct.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenFilterInfo.h"
 #include "DataFormats/PatCandidates/interface/PackedCandidate.h"
-
+#include "DataFormats/JetReco/interface/PFJetCollection.h"
 #include "TauAnalysis/CandidateTools/interface/candidateAuxFunctions.h"
 
 #include <TString.h>
@@ -2312,8 +2312,13 @@ unsigned int NTupleMaker::AddPFJets(const edm::Event& iEvent, const edm::EventSe
   //	iEvent.getByLabel(edm::InputTag("secondaryVertexTagInfosEI"), svInfos);
   //	assert(svInfos.isValid());
   
-  //edm::Handle<edm::ValueMap<float> > puJetIdMVAFull;
-  //iEvent.getByLabel(edm::InputTag("puJetMva","fullDiscriminant"), puJetIdMVAFull);
+  edm::Handle<edm::ValueMap<float> > puJetIdMVAFull;
+  //iEvent.getByLabel(edm::InputTag("puJetIdForPFMVAMEt","fullDiscriminant"), puJetIdMVAFull);
+  iEvent.getByLabel(edm::InputTag("pileupJetIdFull","full53xDiscriminant"), puJetIdMVAFull);
+
+  edm::Handle<reco::PFJetCollection> ak4jets;
+  //iEvent.getByLabel(edm::InputTag("calibratedAK4PFJetsForPFMVAMEt"), ak4jets);
+  iEvent.getByLabel(edm::InputTag("ak4PFJets"), ak4jets);
   
   //	edm::Handle<edm::ValueMap<int> > puJetIdFlagFull;
   //	iEvent.getByLabel(edm::InputTag("pileupJetIdProducer","fullId"), puJetIdFlagFull);
@@ -2385,7 +2390,18 @@ unsigned int NTupleMaker::AddPFJets(const edm::Event& iEvent, const edm::EventSe
 	  //		    pfjet_pu_jet_full_loose[pfjet_count] = PileupJetIdentifier::passJetId( (*puJetIdFlagFull)[(*pfjets)[i].originalObjectRef()], PileupJetIdentifier::kLoose);
 	  //		    pfjet_pu_jet_full_medium[pfjet_count] = PileupJetIdentifier::passJetId( (*puJetIdFlagFull)[(*pfjets)[i].originalObjectRef()], PileupJetIdentifier::kMedium);
 	  //		    pfjet_pu_jet_full_tight[pfjet_count] = PileupJetIdentifier::passJetId( (*puJetIdFlagFull)[(*pfjets)[i].originalObjectRef()], PileupJetIdentifier::kTight);
-	  //		    pfjet_pu_jet_full_mva[pfjet_count] = (*puJetIdMVAFull)[(*pfjets)[i].originalObjectRef()];
+	  //                pfjet_pu_jet_full_mva[pfjet_count] = (*puJetIdMVAFull)[(*pfjets)[i].originalObjectRef()];
+	  
+	  //get MVA Id
+          //for(reco::PFJetCollection::const_iterator iak4jets = ak4jets->begin(); iak4jets != ak4jets->end(); iak4jets++){
+          for(size_t ij = 0; ij < ak4jets->size(); ij++){
+	    reco::PFJetRef jetRef (ak4jets, ij);
+            if(deltaR((*pfjets)[i].p4(), jetRef->p4()) < 0.3){
+              //std::cout<<"original jet pt "<<(*pfjets)[i].pt()<<" re-recoed jet pt "<<jetRef->pt()<<" pu mva value "<<(*puJetIdMVAFull)[jetRef]<<std::endl;
+              pfjet_pu_jet_full_mva[pfjet_count] = (*puJetIdMVAFull)[jetRef];
+            }
+          }
+	  
 	  pfjet_flavour[pfjet_count] = (*pfjets)[i].partonFlavour();
 		
 	  for(unsigned n = 0 ; n < cBtagDiscriminators.size() ; n++)

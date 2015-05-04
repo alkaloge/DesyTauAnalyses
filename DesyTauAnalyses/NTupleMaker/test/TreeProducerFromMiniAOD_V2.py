@@ -396,14 +396,14 @@ process.mvaMetSequence  = cms.Sequence(process.leptonSkimSequence* process.ak4PF
                                        process.puJetIdForPFMVAMEt * process.mvaMETDiTau * process.mvaMETTauMu * 
                                        process.mvaMETTauEle * process.mvaMETMuEle * process.patMvaMetDiTau * 
                                        process.patMvaMetTauMu * process.patMvaMetTauEle * process.patMvaMetMuEle)
-'''
+
 process.pileupJetIdFull = cms.EDProducer("PileupJetIdProducer",
     produceJetIds = cms.bool(True),
     runMvas = cms.bool(True),
     inputIsCorrected = cms.bool(False),
     vertexes = cms.InputTag("offlineSlimmedPrimaryVertices"),
     residualsTxt = cms.FileInPath('RecoJets/JetProducers/data/download.url'),
-    jec = cms.string('AK5PF'),
+    jec = cms.string('AK4PF'),
     residualsFromTxt = cms.bool(False),
     applyJec = cms.bool(True),
     jetids = cms.InputTag(""),
@@ -425,8 +425,8 @@ process.pileupJetIdFull = cms.EDProducer("PileupJetIdProducer",
             'frac05'),
         tmvaMethod = cms.string('JetIDMVAHighPt'),
         cutBased = cms.bool(False),
-        #tmvaWeights = cms.string('CondFormats/JetMETObjects/data/TMVAClassificationCategory_JetID_53X_Dec2012.weights.xml'),
-        tmvaWeights = cms.string('RecoJets/JetProducers/data/TMVAClassificationCategory_JetID_MET_53X_Dec2012.weights.xml.gz'),
+        tmvaWeights = cms.string('CondFormats/JetMETObjects/data/TMVAClassificationCategory_JetID_53X_Dec2012.weights.xml'),
+        #tmvaWeights = cms.string('RecoJets/JetProducers/data/TMVAClassificationCategory_JetID_53X_Dec2012.weights.xml.gz'),
         tmvaSpectators = cms.vstring('jetPt', 
             'jetEta', 
             'jetPhi'),
@@ -454,6 +454,19 @@ process.pileupJetIdFull = cms.EDProducer("PileupJetIdProducer",
     ))
 )
 process.puJetIdSequence = cms.Sequence(process.pileupJetIdFull)
+'''
+process.load("PhysicsTools.PatAlgos.producersLayer1.jetProducer_cff")
+from PhysicsTools.PatAlgos.tools.helpers import massSearchReplaceAnyInputTag
+massSearchReplaceAnyInputTag(process.makePatJets,
+                             "ak4PFJetsCHS",
+                             "ak4PFJets",
+                             verbose=True)
+massSearchReplaceAnyInputTag(process.makePatJets,
+                             'offlinePrimaryVertices',
+                             'offlineSlimmedPrimaryVertices',
+                             verbose=True)
+process.patJetCorrFactors.payload = cms.string('AK4PF')
+process.puJetIdSequence += process.makePatJets 
 '''
 ##################################################
 # Main
@@ -631,7 +644,7 @@ process.p = cms.Path(
 #                     process.mvaNonTrigV025nsCSA14 * 
     #process.ak4PFJets*
     process.mvaMetSequence*
-    #process.puJetIdSequence*
+    process.puJetIdSequence*
     process.makeroottree
     )
 
