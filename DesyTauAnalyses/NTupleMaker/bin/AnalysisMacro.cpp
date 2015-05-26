@@ -219,7 +219,9 @@ int main(int argc, char * argv[]) {
   const float etaElectronCut     = cfg.get<float>("etaElectronCut");
   const float dxyElectronCut     = cfg.get<float>("dxyElectronCut");
   const float dzElectronCut      = cfg.get<float>("dzElectronCut");
-  const float isoElectronCut     = cfg.get<float>("isoElectronCut");
+  const float isoElectronLowCut  = cfg.get<float>("isoElectronLowCut");
+  const float isoElectronHighCut = cfg.get<float>("isoElectronHighCut");
+  const bool applyElectronId     = cfg.get<bool>("ApplyElectronId");
 
   // kinematic cuts on muons
   const float ptMuonLowCut   = cfg.get<float>("ptMuonLowCut");
@@ -227,12 +229,14 @@ int main(int argc, char * argv[]) {
   const float etaMuonCut     = cfg.get<float>("etaMuonCut");
   const float dxyMuonCut     = cfg.get<float>("dxyMuonCut");
   const float dzMuonCut      = cfg.get<float>("dzMuonCut");
-  const float isoMuonCut     = cfg.get<float>("isoMuonCut");
+  const float isoMuonLowCut  = cfg.get<float>("isoMuonLowCut");
+  const float isoMuonHighCut = cfg.get<float>("isoMuonHighCut");
+  const bool applyMuonId     = cfg.get<bool>("ApplyMuonId");
 
   // topological cuts
   const float dRleptonsCut   = cfg.get<float>("dRleptonsCut");
   const float dZetaCut       = cfg.get<float>("dZetaCut");
-
+  const bool oppositeSign    = cfg.get<bool>("oppositeSign");
 
   // **** end of configuration
 
@@ -406,10 +410,11 @@ int main(int argc, char * argv[]) {
 	neutralIso = TMath::Max(float(0),neutralIso); 
 	float absIso = analysisTree.electron_chargedHadIso[ie] + neutralIso;
 	float relIso = absIso/analysisTree.electron_pt[ie];
-	if (relIso>isoElectronCut) continue;
+	if (relIso>isoElectronHighCut) continue;
+	if (relIso<isoElectronLowCut) continue;
 	bool electronMvaId = electronMvaIdTight(analysisTree.electron_superclusterEta[ie],
 						analysisTree.electron_mva_id_nontrigPhys14[ie]);
-	if (!electronMvaId) continue;
+	if (!electronMvaId&&applyElectronId) continue;
 	electrons.push_back(ie);
       }
 
@@ -429,15 +434,16 @@ int main(int argc, char * argv[]) {
 	neutralIso = TMath::Max(float(0),neutralIso); 
 	float absIso = analysisTree.muon_chargedHadIso[im] + neutralIso;
 	float relIso = absIso/analysisTree.muon_pt[im];
-	if (relIso>isoMuonCut) continue;
-	if (!analysisTree.muon_isMedium[im]) continue;
+	if (relIso>isoMuonHighCut) continue;
+	if (relIso<isoMuonLowCut) continue;
+	if (applyMuonId && !analysisTree.muon_isMedium[im]) continue;
 	muons.push_back(im);
       }
 
       if (electrons.size()==0) continue;
       if (muons.size()==0) continue;
 
-      // selecting muon and electron pair (OS);
+      // selecting muon and electron pair (OS or SS);
       float ptScalarSum = -1;
       float dRleptons = -1;
       int electronIndex = -1;
@@ -447,7 +453,8 @@ int main(int argc, char * argv[]) {
 	for (unsigned int im=0; im<muons.size(); ++im) {
 	  int mIndex = muons[im];
 	  float qProd = analysisTree.electron_charge[eIndex]*analysisTree.muon_charge[mIndex];
-	  if (qProd>0) continue;
+	  if (oppositeSign && qProd>0) continue;
+	  if (!oppositeSign && qProd<0) continue;
 	  float dR = deltaR(analysisTree.electron_eta[eIndex],analysisTree.electron_phi[eIndex],
 			    analysisTree.muon_eta[mIndex],analysisTree.muon_phi[mIndex]);
 
