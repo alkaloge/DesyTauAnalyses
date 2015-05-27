@@ -521,7 +521,7 @@ void NTupleMaker::beginJob(){
     tree->Branch("mvamet_sigxy", mvamet_sigxy, "mvamet_sigxy[mvamet_count]/F");
     tree->Branch("mvamet_sigyx", mvamet_sigyx, "mvamet_sigyx[mvamet_count]/F");
     tree->Branch("mvamet_sigyy", mvamet_sigyy, "mvamet_sigyy[mvamet_count]/F");
-    tree->Branch("mvamet_channel", mvamet_channel, "mvamet_channel[mvamet_count]/C");
+    tree->Branch("mvamet_channel", mvamet_channel, "mvamet_channel[mvamet_count]/b");
   }
 
   // generator info
@@ -557,7 +557,7 @@ void NTupleMaker::beginJob(){
 
     tree->Branch("gentau_decayMode",  gentau_decayMode,  "tau_decayMode[gentau_count]/I");
     tree->Branch("gentau_decayMode_name",  gentau_decayMode_name,  "tau_decayMode_name[gentau_count]/C");
-    tree->Branch("gentau_mother",gentau_mother,"gentau_mother[gentau_count]/C");
+    tree->Branch("gentau_mother",gentau_mother,"gentau_mother[gentau_count]/b");
 
     // generated particles
     tree->Branch("genparticles_count", &genparticles_count, "genparticles_count/i");
@@ -571,7 +571,7 @@ void NTupleMaker::beginJob(){
     tree->Branch("genparticles_pdgid", genparticles_pdgid, "genparticles_pdgid[genparticles_count]/I");
     tree->Branch("genparticles_status", genparticles_status, "genparticles_status[genparticles_count]/I");
     tree->Branch("genparticles_info", genparticles_info, "genparticles_info[genparticles_count]/i");
-    tree->Branch("genparticles_mother", genparticles_mother, "genparticles_mother[genparticles_count]/C");
+    tree->Branch("genparticles_mother", genparticles_mother, "genparticles_mother[genparticles_count]/b");
   }    
 
   // trigger objects
@@ -1203,7 +1203,12 @@ void NTupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 	mvamet_sigyx[mvamet_count] = (*imets)[0].getSignificanceMatrix()(1,0);
 	mvamet_sigyy[mvamet_count] = (*imets)[0].getSignificanceMatrix()(1,1);
 
-	mvamet_channel[mvamet_count] = tag;
+	if(tag.find("MuEle") != std::string::npos)mvamet_channel[mvamet_count] = EMU;
+	else if (tag.find("TauEle") != std::string::npos)mvamet_channel[mvamet_count] = ETAU;
+	else if(tag.find("TauMu") != std::string::npos)mvamet_channel[mvamet_count] = MUTAU;
+	else if(tag.find("DiTau") != std::string::npos)mvamet_channel[mvamet_count] = TAUTAU;
+	else mvamet_channel[mvamet_count] = UNKNOWN;
+
 	mvamet_count++;
       }
     }// crecmvamet
@@ -1414,15 +1419,15 @@ bool NTupleMaker::AddGenParticles(const edm::Event& iEvent) {
 	{
 	  bool fill = false;
 	  UInt_t info = 0;
-	  string mother = "";
+	  UInt_t mother = 100;
 	  if(abs((*GenParticles)[i].pdgId()) == 13 && (*GenParticles)[i].pt() > 8. && (*GenParticles)[i].status()==1)
 	    {
 	      fill = true;
-	      if(HasAnyMother(&(*GenParticles)[i], 23) > 0 || HasAnyMother(&(*GenParticles)[i], 22) > 0) {info |= 1<<0; mother="Z";}
-	      if(HasAnyMother(&(*GenParticles)[i], 24) > 0) {info |= 1<<1; mother="W";}
-	      if(HasAnyMother(&(*GenParticles)[i], 15) > 0) {info |= 1<<2; mother="tau";}
+	      if(HasAnyMother(&(*GenParticles)[i], 23) > 0 || HasAnyMother(&(*GenParticles)[i], 22) > 0) {info |= 1<<0; mother=ZBOSON;}
+	      if(HasAnyMother(&(*GenParticles)[i], 24) > 0) {info |= 1<<1; mother=WBOSON;}
+	      if(HasAnyMother(&(*GenParticles)[i], 15) > 0) {info |= 1<<2; mother=TAU;}
 	      if(HasAnyMother(&(*GenParticles)[i], 25) > 0 || HasAnyMother(&(*GenParticles)[i], 35) > 0 || 
-		 HasAnyMother(&(*GenParticles)[i], 36) > 0) {info |= 1<<3; mother="H";}
+		 HasAnyMother(&(*GenParticles)[i], 36) > 0) {info |= 1<<3; mother=HIGGS;}
 	      //	      std::cout << "GenMuon : " << (*GenParticles)[i].pdgId()
 	      //			<< "   pt = " << (*GenParticles)[i].pt()
 	      //			<< "   eta = " << (*GenParticles)[i].eta() 
@@ -1433,11 +1438,11 @@ bool NTupleMaker::AddGenParticles(const edm::Event& iEvent) {
 	  else if(abs((*GenParticles)[i].pdgId()) == 11 && (*GenParticles)[i].pt() > 8. && (*GenParticles)[i].status()==1)
 	    {
 	      fill = true;
-	      if(HasAnyMother(&(*GenParticles)[i], 23) > 0 || HasAnyMother(&(*GenParticles)[i], 22) > 0) {info |= 1<<0; mother="Z";}
-	      if(HasAnyMother(&(*GenParticles)[i], 24) > 0) {info |= 1<<1; mother="W";}
-	      if(HasAnyMother(&(*GenParticles)[i], 15) > 0) {info |= 1<<2; mother="tau";}
+	      if(HasAnyMother(&(*GenParticles)[i], 23) > 0 || HasAnyMother(&(*GenParticles)[i], 22) > 0) {info |= 1<<0; mother=ZBOSON;}
+	      if(HasAnyMother(&(*GenParticles)[i], 24) > 0) {info |= 1<<1; mother=WBOSON;}
+	      if(HasAnyMother(&(*GenParticles)[i], 15) > 0) {info |= 1<<2; mother=TAU;}
 	      if(HasAnyMother(&(*GenParticles)[i], 25) > 0 || HasAnyMother(&(*GenParticles)[i], 35) > 0 ||
-                 HasAnyMother(&(*GenParticles)[i], 36) > 0) {info |= 1<<3; mother="H";}
+                 HasAnyMother(&(*GenParticles)[i], 36) > 0) {info |= 1<<3; mother=HIGGS;}
 	      //	      std::cout << "GenElectron : " << (*GenParticles)[i].pdgId()
 	      //			<< "   pt = " << (*GenParticles)[i].pt()
 	      //			<< "   eta = " << (*GenParticles)[i].eta() 
@@ -1448,11 +1453,11 @@ bool NTupleMaker::AddGenParticles(const edm::Event& iEvent) {
 	  else if(abs((*GenParticles)[i].pdgId()) == 15 && (*GenParticles)[i].pt() > 10.)
 	    {
 	      fill = false;
-	      if(HasAnyMother(&(*GenParticles)[i], 23) > 0 || HasAnyMother(&(*GenParticles)[i], 22) > 0) {info |= 1<<0; mother="Z";}
-	      if(HasAnyMother(&(*GenParticles)[i], 24) > 0) {info |= 1<<1; mother="W";}
-	      if(HasAnyMother(&(*GenParticles)[i], 15) > 0) {info |= 1<<2; mother="tau";}
+	      if(HasAnyMother(&(*GenParticles)[i], 23) > 0 || HasAnyMother(&(*GenParticles)[i], 22) > 0) {info |= 1<<0; mother=ZBOSON;}
+	      if(HasAnyMother(&(*GenParticles)[i], 24) > 0) {info |= 1<<1; mother=WBOSON;}
+	      if(HasAnyMother(&(*GenParticles)[i], 15) > 0) {info |= 1<<2; mother=TAU;}
 	      if(HasAnyMother(&(*GenParticles)[i], 25) > 0 || HasAnyMother(&(*GenParticles)[i], 35) > 0 ||
-                 HasAnyMother(&(*GenParticles)[i], 36) > 0) {info |= 1<<3; mother="H";}
+                 HasAnyMother(&(*GenParticles)[i], 36) > 0) {info |= 1<<3; mother=HIGGS;}
 	      //	      std::cout << "GenTau : "  
 	      //	       		<< "   pt = " << (*GenParticles)[i].pt() 
 	      //	       		<< "   eta = " << (*GenParticles)[i].eta()
@@ -1506,9 +1511,9 @@ bool NTupleMaker::AddGenParticles(const edm::Event& iEvent) {
 	    {
 	      if ((*GenParticles)[i].status()==1) {
 		fill = true;
-		if(HasAnyMother(&(*GenParticles)[i], 23) > 0 || HasAnyMother(&(*GenParticles)[i], 22) > 0) {info |= 1<<0;mother="Z";}
-		if(HasAnyMother(&(*GenParticles)[i], 24) > 0) {info |= 1<<1;mother="W";}
-		if(HasAnyMother(&(*GenParticles)[i], 15) > 0) {info |= 1<<2;mother="tau";}
+		if(HasAnyMother(&(*GenParticles)[i], 23) > 0 || HasAnyMother(&(*GenParticles)[i], 22) > 0) {info |= 1<<0;mother=ZBOSON;}
+		if(HasAnyMother(&(*GenParticles)[i], 24) > 0) {info |= 1<<1;mother=WBOSON;}
+		if(HasAnyMother(&(*GenParticles)[i], 15) > 0) {info |= 1<<2;mother=TAU;}
 		//		std::cout << "GenNeutrino : " << (*GenParticles)[i].pdgId() 
 		//		 	  << "   pt = " << (*GenParticles)[i].pt() 
 		//		 	  << "   eta = " << (*GenParticles)[i].eta() 

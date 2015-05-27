@@ -160,6 +160,9 @@ class NTupleMaker : public edm::EDAnalyzer{
   ~NTupleMaker();
 
  private:
+  enum MotherNames{HIGGS=1, WBOSON, ZBOSON, TAU};
+  enum MvaMetChannel{EMU=1, ETAU, MUTAU, TAUTAU, UNKNOWN};
+
   virtual void beginJob();
   virtual void endJob();
   virtual void beginRun(const edm::Run& iRun, const edm::EventSetup& iSetup);
@@ -629,7 +632,7 @@ class NTupleMaker : public edm::EDAnalyzer{
 
   Int_t gentau_decayMode[M_taumaxcount];
   string gentau_decayMode_name[M_taumaxcount];
-  string gentau_mother[M_taumaxcount];
+  UChar_t gentau_mother[M_taumaxcount];
 
   Int_t gentau_status[M_taumaxcount];
 
@@ -653,7 +656,7 @@ class NTupleMaker : public edm::EDAnalyzer{
   Float_t mvamet_sigxy[M_mvametmaxcount];
   Float_t mvamet_sigyx[M_mvametmaxcount];
   Float_t mvamet_sigyy[M_mvametmaxcount];
-  string  mvamet_channel[M_mvametmaxcount];
+  UChar_t mvamet_channel[M_mvametmaxcount];
 
   Float_t genmet_ex;
   Float_t genmet_ey;
@@ -683,7 +686,7 @@ class NTupleMaker : public edm::EDAnalyzer{
   Int_t genparticles_pdgid[M_genparticlesmaxcount];
   Int_t genparticles_status[M_genparticlesmaxcount];
   UInt_t genparticles_info[M_genparticlesmaxcount];
-  string genparticles_mother[M_genparticlesmaxcount];
+  UChar_t genparticles_mother[M_genparticlesmaxcount];
 
   // trigger objects
   UInt_t trigobject_count;
