@@ -270,6 +270,7 @@ void NTupleMaker::beginJob(){
     tree->Branch("muon_normChi2", muon_normChi2, "muon_normChi2[muon_count]/F");
     tree->Branch("muon_ndof", muon_ndof, "muon_ndof[muon_count]/F");
     tree->Branch("muon_charge", muon_charge, "muon_charge[muon_count]/F");
+    tree->Branch("muon_miniISO", muon_miniISO, "muon_miniISO[muon_count]/F");
     tree->Branch("muon_combQ_chi2LocalPosition", muon_combQ_chi2LocalPosition, "muon_combQ_chi2LocalPosition[muon_count]/F");
     tree->Branch("muon_combQ_trkKink", muon_combQ_trkKink, "muon_combQ_trkKink[muon_count]/F");
     tree->Branch("muon_validFraction", muon_validFraction, "muon_validFraction[muon_count]/F");
@@ -365,6 +366,7 @@ void NTupleMaker::beginJob(){
     tree->Branch("electron_ehcaloverecaldepth2", electron_ehcaloverecaldepth2, "electron_ehcaloverecaldepth2[electron_count]/F");
     tree->Branch("electron_full5x5_sigmaietaieta", electron_full5x5_sigmaietaieta, "electron_full5x5_sigmaietaieta[electron_count]/F");
     tree->Branch("electron_ooemoop", electron_ooemoop, "electron_ooemoop[electron_count]/F");
+    tree->Branch("electron_miniISO", electron_miniISO, "electron_miniISO[electron_count]/F");
 
     tree->Branch("electron_superclusterEta", electron_superClusterEta, "electron_superclusterEta[electron_count]/F");
     tree->Branch("electron_superclusterPhi", electron_superClusterPhi, "electron_superclusterPhi[electron_count]/F");
@@ -504,6 +506,9 @@ void NTupleMaker::beginJob(){
   if (crecpfmet) {
     tree->Branch("pfmet_ex", &pfmet_ex, "pfmet_ex/F");
     tree->Branch("pfmet_ey", &pfmet_ey, "pfmet_ey/F");
+    tree->Branch("pfmet_ez", &pfmet_ey, "pfmet_ez/F");
+    tree->Branch("pfmet_pt", &pfmet_pt, "pfmet_pt/F");
+    tree->Branch("pfmet_phi", &pfmet_phi, "pfmet_phi/F");
     tree->Branch("pfmet_sigxx", &pfmet_sigxx, "pfmet_sigxx/F");
     tree->Branch("pfmet_sigxy", &pfmet_sigxy, "pfmet_sigxy/F");
     tree->Branch("pfmet_sigyx", &pfmet_sigyx, "pfmet_sigyx/F");
@@ -1157,6 +1162,9 @@ void NTupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
       assert(patMet->size() > 0);
       pfmet_ex = (*patMet)[0].px();
       pfmet_ey = (*patMet)[0].py();
+      pfmet_ez = (*patMet)[0].pz();
+      pfmet_pt = (*patMet)[0].pt();
+      pfmet_phi = (*patMet)[0].phi();
 
       // if (cSkim>0) {
       // 	float pfmet_et = sqrt(pfmet_ex*pfmet_ex+pfmet_ey*pfmet_ey);
@@ -1589,6 +1597,18 @@ unsigned int NTupleMaker::AddMuons(const edm::Event& iEvent)
   //	iEvent.getByLabel(edm::InputTag("muons"), Muons);
   iEvent.getByLabel(MuonCollectionTag_, Muons);
   
+    edm::Handle<pat::PackedCandidateCollection> pfcands;
+    iEvent.getByLabel("packedPFCandidates", pfcands);
+    //edm::Handle<pat::MuonCollection> muons;
+    //iEvent.getByLabel("slimmedMuons", muons);
+    //edm::Handle<pat::ElectronCollection> electrons;
+    //iEvent.getByLabel("slimmedElectrons", electrons);
+    //edm::Handle<pat::TauCollection> taus;
+    //iEvent.getByLabel("slimmedTaus", taus);
+    //edm::Handle<pat::METCollection> mets;
+    //iEvent.getByLabel("slimmedMETs", mets);
+
+
   if(Muons.isValid())
     {
       for(unsigned i = 0 ; i < Muons->size() ; i++){
@@ -1605,6 +1625,12 @@ unsigned int NTupleMaker::AddMuons(const edm::Event& iEvent)
 	muon_eta[muon_count] = (*Muons)[i].eta();
 	muon_phi[muon_count] = (*Muons)[i].phi();
 	muon_charge[muon_count] = (*Muons)[i].charge();
+
+
+
+
+	const pat::Muon &lep = (*Muons)[i];
+	muon_miniISO[muon_count]=getPFIsolation(pfcands, dynamic_cast<const reco::Candidate *>(&lep), 0.05, 0.2, 10., false);
 
 	if((*Muons)[i].globalTrack().isNonnull())
 	  {
@@ -2435,6 +2461,8 @@ unsigned int NTupleMaker::AddElectrons(const edm::Event& iEvent, const edm::Even
 
 	edm::Handle<pat::ElectronCollection> Electrons;
 	iEvent.getByLabel(ElectronCollectionTag_, Electrons);
+        edm::Handle<pat::PackedCandidateCollection> pfcands;
+        iEvent.getByLabel("packedPFCandidates", pfcands);
 
 	/*if(crecelectrontrigger)
 	{
@@ -2457,6 +2485,8 @@ unsigned int NTupleMaker::AddElectrons(const edm::Event& iEvent, const edm::Even
 	  electron_phi[electron_count] = (*Electrons)[i].phi(); 
 	  electron_charge[electron_count] = (*Electrons)[i].charge();
 	  
+	  const pat::Electron &lep = (*Electrons)[i];
+          electron_miniISO[muon_count]=getPFIsolation(pfcands, dynamic_cast<const reco::Candidate *>(&lep), 0.05, 0.2, 10., false);
 
 	  electron_esuperclusterovertrack[electron_count] = (*Electrons)[i].eSuperClusterOverP();
 	  electron_eseedclusterovertrack[electron_count] = (*Electrons)[i].eSeedClusterOverP();

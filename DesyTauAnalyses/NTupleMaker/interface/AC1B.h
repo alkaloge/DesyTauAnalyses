@@ -46,6 +46,7 @@ public :
    Int_t           primvertex_ntracks;
    Float_t         primvertex_cov[6];
    UInt_t          muon_count;
+   Float_t          muon_miniISO[100];
    Float_t         muon_px[100];   //[muon_count]
    Float_t         muon_py[100];   //[muon_count]
    Float_t         muon_pz[100];   //[muon_count]
@@ -102,6 +103,7 @@ public :
    Int_t           pfjet_flavour[100];   //[pfjet_count]
    Float_t         pfjet_btag[100][10];   //[pfjet_count]
    UInt_t          electron_count;
+   Float_t          electron_miniISO[100];
    Float_t         electron_px[100];   //[electron_count]
    Float_t         electron_py[100];   //[electron_count]
    Float_t         electron_pz[100];   //[electron_count]
@@ -210,6 +212,9 @@ public :
    Int_t           tau_decayMode[100];   //[tau_count]
    Float_t         pfmet_ex;
    Float_t         pfmet_ey;
+   Float_t         pfmet_ez;
+   Float_t         pfmet_pt;
+   Float_t         pfmet_phi;
    Float_t         pfmet_sigxx;
    Float_t         pfmet_sigxy;
    Float_t         pfmet_sigyx;
@@ -311,6 +316,7 @@ public :
    TBranch        *b_muon_normChi2;   //!
    TBranch        *b_muon_ndof;   //!
    TBranch        *b_muon_charge;   //!
+   TBranch        *b_muon_miniISO;   //!
    TBranch        *b_muon_combQ_chi2LocalPosition;   //!
    TBranch        *b_muon_combQ_trkKink;   //!
    TBranch        *b_muon_validFraction;   //!
@@ -356,6 +362,7 @@ public :
    TBranch        *b_pfjet_flavour;   //!
    TBranch        *b_pfjet_btag;   //!
    TBranch        *b_electron_count;   //!
+   TBranch        *b_electron_miniISO;   //!
    TBranch        *b_electron_px;   //!
    TBranch        *b_electron_py;   //!
    TBranch        *b_electron_pz;   //!
@@ -464,6 +471,9 @@ public :
    TBranch        *b_tau_decayMode;   //!
    TBranch        *b_pfmet_ex;   //!
    TBranch        *b_pfmet_ey;   //!
+   TBranch        *b_pfmet_ez;   //!
+   TBranch        *b_pfmet_pt;   //!
+   TBranch        *b_pfmet_phi;   //!
    TBranch        *b_pfmet_sigxx;   //!
    TBranch        *b_pfmet_sigxy;   //!
    TBranch        *b_pfmet_sigyx;   //!
@@ -645,6 +655,7 @@ void AC1B::Init(TTree *tree)
    fChain->SetBranchAddress("primvertex_ntracks", &primvertex_ntracks, &b_primvertex_ntracks);
    fChain->SetBranchAddress("primvertex_cov", primvertex_cov, &b_primvertex_cov);
    fChain->SetBranchAddress("muon_count", &muon_count, &b_muon_count);
+   fChain->SetBranchAddress("muon_miniISO", &muon_miniISO, &b_muon_miniISO);
    fChain->SetBranchAddress("muon_px", muon_px, &b_muon_px);
    fChain->SetBranchAddress("muon_py", muon_py, &b_muon_py);
    fChain->SetBranchAddress("muon_pz", muon_pz, &b_muon_pz);
@@ -701,6 +712,7 @@ void AC1B::Init(TTree *tree)
    fChain->SetBranchAddress("pfjet_flavour", pfjet_flavour, &b_pfjet_flavour);
    fChain->SetBranchAddress("pfjet_btag", pfjet_btag, &b_pfjet_btag);
    fChain->SetBranchAddress("electron_count", &electron_count, &b_electron_count);
+   fChain->SetBranchAddress("electron_miniISO", &electron_miniISO, &b_electron_miniISO);
    fChain->SetBranchAddress("electron_px", electron_px, &b_electron_px);
    fChain->SetBranchAddress("electron_py", electron_py, &b_electron_py);
    fChain->SetBranchAddress("electron_pz", electron_pz, &b_electron_pz);
@@ -809,6 +821,9 @@ void AC1B::Init(TTree *tree)
    fChain->SetBranchAddress("tau_decayMode", tau_decayMode, &b_tau_decayMode);
    fChain->SetBranchAddress("pfmet_ex", &pfmet_ex, &b_pfmet_ex);
    fChain->SetBranchAddress("pfmet_ey", &pfmet_ey, &b_pfmet_ey);
+   fChain->SetBranchAddress("pfmet_ez", &pfmet_ez, &b_pfmet_ez);
+   fChain->SetBranchAddress("pfmet_pt", &pfmet_pt, &b_pfmet_pt);
+   fChain->SetBranchAddress("pfmet_phi", &pfmet_phi, &b_pfmet_phi);
    fChain->SetBranchAddress("pfmet_sigxx", &pfmet_sigxx, &b_pfmet_sigxx);
    fChain->SetBranchAddress("pfmet_sigxy", &pfmet_sigxy, &b_pfmet_sigxy);
    fChain->SetBranchAddress("pfmet_sigyx", &pfmet_sigyx, &b_pfmet_sigyx);
