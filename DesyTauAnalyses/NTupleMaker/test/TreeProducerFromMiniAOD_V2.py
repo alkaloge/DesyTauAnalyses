@@ -396,14 +396,14 @@ process.mvaMetSequence  = cms.Sequence(process.leptonSkimSequence* process.ak4PF
                                        process.puJetIdForPFMVAMEt * process.mvaMETDiTau * process.mvaMETTauMu * 
                                        process.mvaMETTauEle * process.mvaMETMuEle * process.patMvaMetDiTau * 
                                        process.patMvaMetTauMu * process.patMvaMetTauEle * process.patMvaMetMuEle)
-'''
+
 process.pileupJetIdFull = cms.EDProducer("PileupJetIdProducer",
     produceJetIds = cms.bool(True),
     runMvas = cms.bool(True),
     inputIsCorrected = cms.bool(False),
     vertexes = cms.InputTag("offlineSlimmedPrimaryVertices"),
     residualsTxt = cms.FileInPath('RecoJets/JetProducers/data/download.url'),
-    jec = cms.string('AK5PF'),
+    jec = cms.string('AK4PF'),
     residualsFromTxt = cms.bool(False),
     applyJec = cms.bool(True),
     jetids = cms.InputTag(""),
@@ -425,8 +425,8 @@ process.pileupJetIdFull = cms.EDProducer("PileupJetIdProducer",
             'frac05'),
         tmvaMethod = cms.string('JetIDMVAHighPt'),
         cutBased = cms.bool(False),
-        #tmvaWeights = cms.string('CondFormats/JetMETObjects/data/TMVAClassificationCategory_JetID_53X_Dec2012.weights.xml'),
-        tmvaWeights = cms.string('RecoJets/JetProducers/data/TMVAClassificationCategory_JetID_MET_53X_Dec2012.weights.xml.gz'),
+        tmvaWeights = cms.string('CondFormats/JetMETObjects/data/TMVAClassificationCategory_JetID_53X_Dec2012.weights.xml'),
+        #tmvaWeights = cms.string('RecoJets/JetProducers/data/TMVAClassificationCategory_JetID_53X_Dec2012.weights.xml.gz'),
         tmvaSpectators = cms.vstring('jetPt', 
             'jetEta', 
             'jetPhi'),
@@ -454,6 +454,19 @@ process.pileupJetIdFull = cms.EDProducer("PileupJetIdProducer",
     ))
 )
 process.puJetIdSequence = cms.Sequence(process.pileupJetIdFull)
+'''
+process.load("PhysicsTools.PatAlgos.producersLayer1.jetProducer_cff")
+from PhysicsTools.PatAlgos.tools.helpers import massSearchReplaceAnyInputTag
+massSearchReplaceAnyInputTag(process.makePatJets,
+                             "ak4PFJetsCHS",
+                             "ak4PFJets",
+                             verbose=True)
+massSearchReplaceAnyInputTag(process.makePatJets,
+                             'offlinePrimaryVertices',
+                             'offlineSlimmedPrimaryVertices',
+                             verbose=True)
+process.patJetCorrFactors.payload = cms.string('AK4PF')
+process.puJetIdSequence += process.makePatJets 
 '''
 ##################################################
 # Main
@@ -511,7 +524,8 @@ RecMuonHLTriggerMatching = cms.untracked.vstring(
 'HLT_IsoMu24_eta2p1_IterTrk02_v.*:hltL3crIsoL1sMu20Eta2p1L1f0L2f20QL3f24QL3crIsoRhoFiltered0p15IterTrk02',
 'HLT_IsoTkMu24_eta2p1_IterTrk02_v.*:hltL3fL1sMu20L1Eta2p1f0TkFiltered24QL3crIsoRhoFiltered0p15IterTrk02',
 'HLT_Mu23_TrkIsoVVL_Ele12_Gsf_CaloId_TrackId_Iso_MediumWP_v.*:hltL1Mu12EG7L3IsoMuFiltered23',
-'HLT_Mu8_TrkIsoVVL_Ele23_Gsf_CaloId_TrackId_Iso_MediumWP_v.*:hltL1sL1Mu5EG20ORL1Mu5IsoEG18L3IsoFiltered8'
+'HLT_Mu8_TrkIsoVVL_Ele23_Gsf_CaloId_TrackId_Iso_MediumWP_v.*:hltL1sL1Mu5EG20ORL1Mu5IsoEG18L3IsoFiltered8',
+'HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v.*:hltOverlapFilterIsoMu17LooseIsoPFTau20'
 ),
 RecMuonNum = cms.untracked.int32(0),
 # photons
@@ -521,19 +535,23 @@ RecPhotonHLTriggerMatching = cms.untracked.vstring(),
 RecPhotonNum = cms.untracked.int32(0),
 # electrons
 RecElectronPtMin = cms.untracked.double(10.),
-RecElectronEta = cms.untracked.double(2.4),
+RecElectronEtaMax = cms.untracked.double(2.5),
 RecElectronHLTriggerMatching = cms.untracked.vstring(
 'HLT_Ele27_eta2p1_WP85_Gsf_v.*:hltEle27WP85GsfTrackIsoFilter',
 'HLT_Ele32_eta2p1_WP85_Gsf_v.*:hltEle32WP85GsfTrackIsoFilter',
 'HLT_Mu23_TrkIsoVVL_Ele12_Gsf_CaloId_TrackId_Iso_MediumWP_v.*:hltMu23Ele12GsfTrackIsoLegEle12GsfCaloIdTrackIdIsoMediumWPFilter',
-'HLT_Mu8_TrkIsoVVL_Ele23_Gsf_CaloId_TrackId_Iso_MediumWP_v.*:hltMu8Ele23GsfTrackIsoLegEle23GsfCaloIdTrackIdIsoMediumWPFilter'
+'HLT_Mu8_TrkIsoVVL_Ele23_Gsf_CaloId_TrackId_Iso_MediumWP_v.*:hltMu8Ele23GsfTrackIsoLegEle23GsfCaloIdTrackIdIsoMediumWPFilter',
+'HLT_Ele22_eta2p1_WP85_Gsf_LooseIsoPFTau20_v.*:hltOverlapFilterIsoEle22WP85GsfLooseIsoPFTau20'
 ),
 RecElectronNum = cms.untracked.int32(0),
 # taus
 RecTauPtMin = cms.untracked.double(20),
 RecTauEtaMax = cms.untracked.double(2.3),                                      
 RecTauHLTriggerMatching = cms.untracked.vstring(
-'HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v.*:hltPFTau50TrackPt30LooseAbsOrRelIso'
+'HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v.*:hltPFTau50TrackPt30LooseAbsOrRelIso',
+'HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v.*:hltL1sMu16erTauJet20er,hltOverlapFilterIsoMu17LooseIsoPFTau20',
+'HLT_Ele22_eta2p1_WP85_Gsf_LooseIsoPFTau20_v.*:hltL1sL1IsoEG20erTauJet20er,hltOverlapFilterIsoEle22WP85GsfLooseIsoPFTau20',
+'HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v.*:hltL1sDoubleTauJet36erORDoubleTauJet68er,hltDoubleL2IsoTau35eta2p1,hltDoublePFTau40TrackPt1MediumIsolationDz02Reg'
 ),
 RecTauFloatDiscriminators = cms.untracked.vstring(
 #'againstElectronLoose',
@@ -600,7 +618,7 @@ RecTauBinaryDiscriminators = cms.untracked.vstring(),
 RecTauNum = cms.untracked.int32(0),
 # jets
 RecJetPtMin = cms.untracked.double(30.),
-RecJetEtaMax = cms.untracked.double(2.5),
+RecJetEtaMax = cms.untracked.double(5.0),
 RecJetHLTriggerMatching = cms.untracked.vstring(),
 RecJetBtagDiscriminators = cms.untracked.vstring(
 'jetBProbabilityBJetTags',
@@ -631,7 +649,7 @@ process.p = cms.Path(
 #                     process.mvaNonTrigV025nsCSA14 * 
     #process.ak4PFJets*
     process.mvaMetSequence*
-    #process.puJetIdSequence*
+    process.puJetIdSequence*
     process.makeroottree
     )
 

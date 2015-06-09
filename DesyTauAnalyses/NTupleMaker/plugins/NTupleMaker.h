@@ -159,7 +159,79 @@ class NTupleMaker : public edm::EDAnalyzer{
   explicit NTupleMaker( const edm::ParameterSet& iConfig );
   ~NTupleMaker();
 
+ double getPFIsolation(edm::Handle<pat::PackedCandidateCollection> pfcands,
+                        const reco::Candidate* ptcl,  
+                        double r_iso_min, double r_iso_max, double kt_scale,
+                        bool charged_only) {
+
+    if (ptcl->pt()<5.) return 99999.;
+
+    double deadcone_nh(0.), deadcone_ch(0.), deadcone_ph(0.), deadcone_pu(0.);
+    if(ptcl->isElectron()) {
+      if (fabs(ptcl->eta())>1.479) {deadcone_ch = 0.015; deadcone_pu = 0.015; deadcone_ph = 0.08;}
+    } else if(ptcl->isMuon()) {
+      deadcone_ch = 0.0001; deadcone_pu = 0.01; deadcone_ph = 0.01;deadcone_nh = 0.01;  
+    } else {
+      //deadcone_ch = 0.0001; deadcone_pu = 0.01; deadcone_ph = 0.01;deadcone_nh = 0.01; // maybe use muon cones??
+    }
+
+    double iso_nh(0.); double iso_ch(0.); 
+    double iso_ph(0.); double iso_pu(0.);
+    double ptThresh(0.5);
+    if(ptcl->isElectron()) ptThresh = 0;
+    double r_iso = max(r_iso_min,min(r_iso_max, kt_scale/ptcl->pt()));
+    for (const pat::PackedCandidate &pfc : *pfcands) {
+      if (abs(pfc.pdgId())<7) continue;
+
+      double dr = deltaR(pfc, *ptcl);
+      if (dr > r_iso) continue;
+      
+      //////////////////  NEUTRALS  /////////////////////////
+      if (pfc.charge()==0){
+        if (pfc.pt()>ptThresh) {
+          /////////// PHOTONS ////////////
+          if (abs(pfc.pdgId())==22) {
+            if(dr < deadcone_ph) continue;
+            iso_ph += pfc.pt();
+	    /////////// NEUTRAL HADRONS ////////////
+          } else if (abs(pfc.pdgId())==130) {
+            if(dr < deadcone_nh) continue;
+            iso_nh += pfc.pt();
+          }
+        }
+        //////////////////  CHARGED from PV  /////////////////////////
+      } else if (pfc.fromPV()>1){
+        if (abs(pfc.pdgId())==211) {
+          if(dr < deadcone_ch) continue;
+          iso_ch += pfc.pt();
+        }
+        //////////////////  CHARGED from PU  /////////////////////////
+      } else {
+        if (pfc.pt()>ptThresh){
+          if(dr < deadcone_pu) continue;
+          iso_pu += pfc.pt();
+        }
+      }
+    }
+    double iso(0.);
+    if (charged_only){
+      iso = iso_ch;
+    } else {
+      iso = iso_ph + iso_nh;
+      iso -= 0.5*iso_pu;
+      if (iso>0) iso += iso_ch;
+      else iso = iso_ch;
+    }
+    iso = iso/ptcl->pt();
+
+    return iso;
+  }
+
+
  private:
+  enum MotherNames{HIGGS=1, WBOSON, ZBOSON, TAU};
+  enum MvaMetChannel{EMU=1, ETAU, MUTAU, TAUTAU, UNKNOWN};
+
   virtual void beginJob();
   virtual void endJob();
   virtual void beginRun(const edm::Run& iRun, const edm::EventSetup& iSetup);
@@ -368,6 +440,7 @@ class NTupleMaker : public edm::EDAnalyzer{
   Float_t muon_normChi2[M_muonmaxcount];
   Float_t muon_ndof[M_muonmaxcount];
   Float_t muon_charge[M_muonmaxcount];
+  Float_t muon_miniISO[M_muonmaxcount];
   // needed for medium muon Id
   Float_t muon_combQ_chi2LocalPosition[M_muonmaxcount];
   Float_t muon_combQ_trkKink[M_muonmaxcount];
@@ -477,6 +550,7 @@ class NTupleMaker : public edm::EDAnalyzer{
   Float_t electron_neutralHadIso[M_electronmaxcount];
   Float_t electron_photonIso[M_electronmaxcount];
   Float_t electron_puIso[M_electronmaxcount];
+  Float_t electron_miniISO[M_electronmaxcount];
 
   Float_t electron_charge[M_electronmaxcount];
   UChar_t electron_nhits[M_electronmaxcount];
@@ -629,7 +703,7 @@ class NTupleMaker : public edm::EDAnalyzer{
 
   Int_t gentau_decayMode[M_taumaxcount];
   string gentau_decayMode_name[M_taumaxcount];
-  string gentau_mother[M_taumaxcount];
+  UChar_t gentau_mother[M_taumaxcount];
 
   Int_t gentau_status[M_taumaxcount];
 
@@ -639,6 +713,10 @@ class NTupleMaker : public edm::EDAnalyzer{
   // met
   Float_t pfmet_ex;
   Float_t pfmet_ey;
+  Float_t pfmet_ez;
+  Float_t pfmet_pt;
+  Float_t pfmet_phi;
+  Float_t pfmet_sumet;
 
   Float_t pfmet_sigxx;
   Float_t pfmet_sigxy;
@@ -653,7 +731,7 @@ class NTupleMaker : public edm::EDAnalyzer{
   Float_t mvamet_sigxy[M_mvametmaxcount];
   Float_t mvamet_sigyx[M_mvametmaxcount];
   Float_t mvamet_sigyy[M_mvametmaxcount];
-  string  mvamet_channel[M_mvametmaxcount];
+  UChar_t mvamet_channel[M_mvametmaxcount];
 
   Float_t genmet_ex;
   Float_t genmet_ey;
@@ -683,7 +761,7 @@ class NTupleMaker : public edm::EDAnalyzer{
   Int_t genparticles_pdgid[M_genparticlesmaxcount];
   Int_t genparticles_status[M_genparticlesmaxcount];
   UInt_t genparticles_info[M_genparticlesmaxcount];
-  string genparticles_mother[M_genparticlesmaxcount];
+  UChar_t genparticles_mother[M_genparticlesmaxcount];
 
   // trigger objects
   UInt_t trigobject_count;
