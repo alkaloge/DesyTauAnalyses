@@ -462,6 +462,22 @@ class NTupleMaker : public edm::EDAnalyzer{
   Float_t muon_photonIso[M_muonmaxcount];
   Float_t muon_puIso[M_muonmaxcount];
 
+  Float_t muon_r03_sumChargedHadronPt[M_muonmaxcount];
+  Float_t muon_r03_sumChargedParticlePt[M_muonmaxcount];
+  Float_t muon_r03_sumNeutralHadronEt[M_muonmaxcount];
+  Float_t muon_r03_sumPhotonEt[M_muonmaxcount];
+  Float_t muon_r03_sumNeutralHadronEtHighThreshold[M_muonmaxcount];
+  Float_t muon_r03_sumPhotonEtHighThreshold[M_muonmaxcount];
+  Float_t muon_r03_sumPUPt[M_muonmaxcount];
+
+  Float_t muon_r04_sumChargedHadronPt[M_muonmaxcount];
+  Float_t muon_r04_sumChargedParticlePt[M_muonmaxcount];
+  Float_t muon_r04_sumNeutralHadronEt[M_muonmaxcount];
+  Float_t muon_r04_sumPhotonEt[M_muonmaxcount];
+  Float_t muon_r04_sumNeutralHadronEtHighThreshold[M_muonmaxcount];
+  Float_t muon_r04_sumPhotonEtHighThreshold[M_muonmaxcount];
+  Float_t muon_r04_sumPUPt[M_muonmaxcount];
+
   Bool_t muon_isPF[M_muonmaxcount];
   Bool_t muon_isGlobal[M_muonmaxcount];
   Bool_t muon_isTracker[M_muonmaxcount];
@@ -551,6 +567,14 @@ class NTupleMaker : public edm::EDAnalyzer{
   Float_t electron_photonIso[M_electronmaxcount];
   Float_t electron_puIso[M_electronmaxcount];
   Float_t electron_miniISO[M_electronmaxcount];
+
+  Float_t electron_r03_sumChargedHadronPt[M_electronmaxcount];
+  Float_t electron_r03_sumChargedParticlePt[M_electronmaxcount];
+  Float_t electron_r03_sumNeutralHadronEt[M_electronmaxcount];
+  Float_t electron_r03_sumPhotonEt[M_electronmaxcount];
+  Float_t electron_r03_sumNeutralHadronEtHighThreshold[M_electronmaxcount];
+  Float_t electron_r03_sumPhotonEtHighThreshold[M_electronmaxcount];
+  Float_t electron_r03_sumPUPt[M_electronmaxcount];
 
   Float_t electron_charge[M_electronmaxcount];
   UChar_t electron_nhits[M_electronmaxcount];
@@ -660,8 +684,10 @@ class NTupleMaker : public edm::EDAnalyzer{
 
   // against electron
   Float_t tau_againstElectronVLooseMVA5[M_taumaxcount];
+  Float_t tau_againstElectronVTightMVA5[M_taumaxcount];
   Float_t tau_againstElectronLooseMVA5[M_taumaxcount];
   Float_t tau_againstElectronMediumMVA5[M_taumaxcount];
+  Float_t tau_againstElectronTightMVA5[M_taumaxcount];
   
   // number of tracks around 
   UInt_t tau_ntracks_pt05[M_taumaxcount];
