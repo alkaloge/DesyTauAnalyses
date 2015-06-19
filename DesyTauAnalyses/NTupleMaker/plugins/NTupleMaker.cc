@@ -219,6 +219,8 @@ void NTupleMaker::beginJob(){
     tree->Branch("beamspot_cov", &beamspot_cov, "beamspot_cov[6]/F");
   }  
 
+  tree->Branch("rho",&rhoNeutral,"rho/F");
+
   //tree->Branch("track_count", &track_count, "track_count/i"); 
   //tree->Branch("track_px", track_px, "track_px[track_count]/F");
   //tree->Branch("track_py", track_py, "track_py[track_count]/F");
@@ -288,6 +290,23 @@ void NTupleMaker::beginJob(){
     tree->Branch("muon_neutralHadIso",muon_neutralHadIso,"muon_neutralHadIso[muon_count]/F");
     tree->Branch("muon_photonIso",muon_photonIso,"muon_photonIso[muon_count]/F");
     tree->Branch("muon_puIso",muon_puIso,"muon_puIso[muon_count]/F");
+    
+    tree->Branch("muon_r03_sumChargedHadronPt",muon_r03_sumChargedHadronPt,"muon_r03_sumChargedHadronPt[muon_count]/F");
+    tree->Branch("muon_r03_sumChargedParticlePt",muon_r03_sumChargedParticlePt,"muon_r03_sumChargedParticlePt[muon_count]/F");
+    tree->Branch("muon_r03_sumNeutralHadronEt",muon_r03_sumNeutralHadronEt,"muon_r03_sumNeutralHadronEt[muon_count]/F");
+    tree->Branch("muon_r03_sumPhotonEt",muon_r03_sumPhotonEt,"muon_r03_sumPhotonEt[muon_count]/F");
+    tree->Branch("muon_r03_sumNeutralHadronEtHighThreshold",muon_r03_sumNeutralHadronEtHighThreshold,"muon_r03_sumNeutralHadronEtHighThreshold[muon_count]/F");
+    tree->Branch("muon_r03_sumPhotonEtHighThreshold",muon_r03_sumPhotonEtHighThreshold,"muon_r03_sumPhotonEtHighThreshold[muon_count]/F");
+    tree->Branch("muon_r03_sumPUPt",muon_r03_sumPUPt,"muon_r03_sumPUPt[muon_count]/F");
+
+    tree->Branch("muon_r04_sumChargedHadronPt",muon_r04_sumChargedHadronPt,"muon_r04_sumChargedHadronPt[muon_count]/F");
+    tree->Branch("muon_r04_sumChargedParticlePt",muon_r04_sumChargedParticlePt,"muon_r04_sumChargedParticlePt[muon_count]/F");
+    tree->Branch("muon_r04_sumNeutralHadronEt",muon_r04_sumNeutralHadronEt,"muon_r04_sumNeutralHadronEt[muon_count]/F");
+    tree->Branch("muon_r04_sumPhotonEt",muon_r04_sumPhotonEt,"muon_r04_sumPhotonEt[muon_count]/F");
+    tree->Branch("muon_r04_sumNeutralHadronEtHighThreshold",muon_r04_sumNeutralHadronEtHighThreshold,"muon_r04_sumNeutralHadronEtHighThreshold[muon_count]/F");
+    tree->Branch("muon_r04_sumPhotonEtHighThreshold",muon_r04_sumPhotonEtHighThreshold,"muon_r04_sumPhotonEtHighThreshold[muon_count]/F");
+    tree->Branch("muon_r04_sumPUPt",muon_r04_sumPUPt,"muon_r04_sumPUPt[muon_count]/F");
+
     tree->Branch("muon_isPF",muon_isPF,"muon_isPF[muon_count]/O");
     tree->Branch("muon_isGlobal",muon_isGlobal,"muon_isGlobal[muon_count]/O");
     tree->Branch("muon_isTracker",muon_isTracker,"muon_isTracker[muon_count]/O");
@@ -380,6 +399,14 @@ void NTupleMaker::beginJob(){
     tree->Branch("electron_photonIso",     electron_photonIso,    "electron_photonIso[electron_count]/F");
     tree->Branch("electron_puIso",         electron_puIso,        "electron_puIso[electron_count]/F");
     
+    tree->Branch("electron_r03_sumChargedHadronPt",electron_r03_sumChargedHadronPt,"electron_r03_sumChargedHadronPt[electron_count]/F");
+    tree->Branch("electron_r03_sumChargedParticlePt",electron_r03_sumChargedParticlePt,"electron_r03_sumChargedParticlePt[electron_count]/F");
+    tree->Branch("electron_r03_sumNeutralHadronEt",electron_r03_sumNeutralHadronEt,"electron_r03_sumNeutralHadronEt[electron_count]/F");
+    tree->Branch("electron_r03_sumPhotonEt",electron_r03_sumPhotonEt,"electron_r03_sumPhotonEt[electron_count]/F");
+    tree->Branch("electron_r03_sumNeutralHadronEtHighThreshold",electron_r03_sumNeutralHadronEtHighThreshold,"electron_r03_sumNeutralHadronEtHighThreshold[electron_count]/F");
+    tree->Branch("electron_r03_sumPhotonEtHighThreshold",electron_r03_sumPhotonEtHighThreshold,"electron_r03_sumPhotonEtHighThreshold[electron_count]/F");
+    tree->Branch("electron_r03_sumPUPt",electron_r03_sumPUPt,"electron_r03_sumPUPt[electron_count]/F");
+
     tree->Branch("electron_nhits", electron_nhits, "electron_nhits[electron_count]/b");
     tree->Branch("electron_npixelhits", electron_npixelhits, "electron_npixelhits[electron_count]/b"); 
     tree->Branch("electron_nmissinghits", electron_nmissinghits, "electron_nmissinghits[electron_count]/b");
@@ -479,8 +506,10 @@ void NTupleMaker::beginJob(){
     tree->Branch("tau_againstMuonTight3", tau_againstMuonTight3, "tau_againstMuonTight3[tau_count]/F");
 
     tree->Branch("tau_againstElectronVLooseMVA5", tau_againstElectronVLooseMVA5, "tau_againstElectronVLooseMVA5[tau_count]/F");
+    tree->Branch("tau_againstElectronVTightMVA5", tau_againstElectronVTightMVA5, "tau_againstElectronVTightMVA5[tau_count]/F");
     tree->Branch("tau_againstElectronLooseMVA5", tau_againstElectronLooseMVA5, "tau_againstElectronLooseMVA5[tau_count]/F");
     tree->Branch("tau_againstElectronMediumMVA5", tau_againstElectronMediumMVA5, "tau_againstElectronMediumMVA5[tau_count]/F");
+    tree->Branch("tau_againstElectronTightMVA5", tau_againstElectronTightMVA5, "tau_againstElectronTightMVA5[tau_count]/F");
 
     tree->Branch("tau_ntracks_pt05", tau_ntracks_pt05, "tau_ntracks_pt05[tau_count]/i");
     tree->Branch("tau_ntracks_pt08", tau_ntracks_pt05, "tau_ntracks_pt05[tau_count]/i");
@@ -1422,6 +1451,7 @@ bool NTupleMaker::AddGenParticles(const edm::Event& iEvent) {
   
   if(GenParticles.isValid())
     {
+      bool count_partons = false;
       passed = true;
       for(unsigned i = 0 ; i < GenParticles->size() ; i++)
 	{
@@ -1531,10 +1561,11 @@ bool NTupleMaker::AddGenParticles(const edm::Event& iEvent) {
 
 	      }
 	    }
-	  // Save all partons (quarks)
-	  else if(abs((*GenParticles)[i].pdgId()) < 6 && (*GenParticles)[i].pt() > 20.)
+	  // Save partons (quarks)
+	  else if(abs((*GenParticles)[i].pdgId()) < 6)
 	    {
-	      fill = true;
+	      if ((*GenParticles)[i].status()==3 && count_partons)
+		fill = true;
 	    }
 	  // Save all tops from Madgraph
 	  else if ( abs((*GenParticles)[i].pdgId()) == 6 && (*GenParticles)[i].status()==62 ) 
@@ -1546,14 +1577,16 @@ bool NTupleMaker::AddGenParticles(const edm::Event& iEvent) {
 	      //		 	  << "   phi = " << (*GenParticles)[i].phi() 
 	      //		 	  << "   status = " << (*GenParticles)[i].status() << std::endl;
 	    }
-	  // Save all partons (gluons)
-	  else if(abs((*GenParticles)[i].pdgId()) == 21 && (*GenParticles)[i].pt() > 20.)
+	  // Save partons (gluons) 
+	  else if(abs((*GenParticles)[i].pdgId()) == 21)
 	    {
-	      fill = true;
+	      if ((*GenParticles)[i].status()==3 && count_partons)
+		fill = true;
 	    }
 	  // Save all W/Z bosons from Madgraph
 	  else if(abs((*GenParticles)[i].pdgId()) == 23 || abs((*GenParticles)[i].pdgId()) == 24 )
 	    {
+	      count_partons = true;
 	      if ( (*GenParticles)[i].status()==62 || (*GenParticles)[i].status()==52 ) {
 		fill = true;
 		//		std::cout << "GenBoson : " << (*GenParticles)[i].pdgId() 
@@ -1665,6 +1698,22 @@ unsigned int NTupleMaker::AddMuons(const edm::Event& iEvent)
 	muon_photonIso[muon_count] = (*Muons)[i].photonIso();
 	muon_puIso[muon_count] = (*Muons)[i].puChargedHadronIso();
 
+	muon_r03_sumChargedHadronPt[muon_count] = (*Muons)[i].pfIsolationR03().sumChargedHadronPt;
+	muon_r03_sumChargedParticlePt[muon_count] = (*Muons)[i].pfIsolationR03().sumChargedParticlePt;
+	muon_r03_sumNeutralHadronEt[muon_count] = (*Muons)[i].pfIsolationR03().sumNeutralHadronEt;
+	muon_r03_sumPhotonEt[muon_count] = (*Muons)[i].pfIsolationR03().sumPhotonEt;
+	muon_r03_sumNeutralHadronEtHighThreshold[muon_count] = (*Muons)[i].pfIsolationR03().sumNeutralHadronEtHighThreshold;
+	muon_r03_sumPhotonEtHighThreshold[muon_count] = (*Muons)[i].pfIsolationR03().sumPhotonEtHighThreshold;
+	muon_r03_sumPUPt[muon_count] = (*Muons)[i].pfIsolationR03().sumPUPt;
+
+        muon_r04_sumChargedHadronPt[muon_count] = (*Muons)[i].pfIsolationR04().sumChargedHadronPt;
+        muon_r04_sumChargedParticlePt[muon_count] = (*Muons)[i].pfIsolationR04().sumChargedParticlePt;
+        muon_r04_sumNeutralHadronEt[muon_count] = (*Muons)[i].pfIsolationR04().sumNeutralHadronEt;
+        muon_r04_sumPhotonEt[muon_count] = (*Muons)[i].pfIsolationR04().sumPhotonEt;
+        muon_r04_sumNeutralHadronEtHighThreshold[muon_count] = (*Muons)[i].pfIsolationR04().sumNeutralHadronEtHighThreshold;
+        muon_r04_sumPhotonEtHighThreshold[muon_count] = (*Muons)[i].pfIsolationR04().sumPhotonEtHighThreshold;
+        muon_r04_sumPUPt[muon_count] = (*Muons)[i].pfIsolationR04().sumPUPt;
+
 	TrackRef innertrack = (*Muons)[i].innerTrack();
 
 	muon_combQ_trkKink[muon_count] = (*Muons)[i].combinedQuality().trkKink;  
@@ -1700,7 +1749,7 @@ unsigned int NTupleMaker::AddMuons(const edm::Event& iEvent)
 	
 	bool goodGlb = muon_isGlobal[muon_count] && muon_normChi2[muon_count]  < 3 
 	 && muon_combQ_chi2LocalPosition[muon_count] < 12 && muon_combQ_trkKink[muon_count] < 20;
-	muon_isMedium[muon_count] =  muon_validFraction[muon_count] > 0.8 && muon_segmentComp[muon_count] >= (goodGlb ? 0.303 : 0.451);
+	muon_isMedium[muon_count] =  muon_validFraction[muon_count] >= 0.8 && muon_segmentComp[muon_count] >= (goodGlb ? 0.303 : 0.451);
 
 
 	muon_count++;
@@ -2062,8 +2111,10 @@ unsigned int NTupleMaker::AddTaus(const edm::Event& iEvent, const edm::EventSetu
 	  tau_againstMuonTight3[tau_count]  = (*Taus)[i].tauID("againstMuonTight3");
 	  // anti-electron discriminator
 	  tau_againstElectronVLooseMVA5[tau_count]  = (*Taus)[i].tauID("againstElectronVLooseMVA5");
+	  tau_againstElectronVTightMVA5[tau_count]  = (*Taus)[i].tauID("againstElectronVTightMVA5");
 	  tau_againstElectronLooseMVA5[tau_count]  = (*Taus)[i].tauID("againstElectronLooseMVA5");
 	  tau_againstElectronMediumMVA5[tau_count]  = (*Taus)[i].tauID("againstElectronMediumMVA5");
+	  tau_againstElectronTightMVA5[tau_count]  = (*Taus)[i].tauID("againstElectronTightMVA5");
 
 	  if( ((*Taus)[i].genJet())) {
 	    std::string genTauDecayMode = JetMCTagUtils::genTauDecayMode(*((*Taus)[i].genJet()));
@@ -2515,6 +2566,15 @@ unsigned int NTupleMaker::AddElectrons(const edm::Event& iEvent, const edm::Even
 	  electron_neutralHadIso[electron_count] = (*Electrons)[i].neutralHadronIso();
 	  electron_photonIso[electron_count] = (*Electrons)[i].photonIso();
 	  electron_puIso[electron_count] = (*Electrons)[i].puChargedHadronIso();
+
+	  electron_r03_sumChargedHadronPt[electron_count] = (*Electrons)[i].pfIsolationVariables().sumChargedHadronPt;
+	  electron_r03_sumChargedParticlePt[electron_count] = (*Electrons)[i].pfIsolationVariables().sumChargedParticlePt;
+	  electron_r03_sumNeutralHadronEt[electron_count] = (*Electrons)[i].pfIsolationVariables().sumNeutralHadronEt;
+	  electron_r03_sumPhotonEt[electron_count] = (*Electrons)[i].pfIsolationVariables().sumPhotonEt;
+	  electron_r03_sumNeutralHadronEtHighThreshold[electron_count] = (*Electrons)[i].pfIsolationVariables().sumNeutralHadronEtHighThreshold;
+	  electron_r03_sumPhotonEtHighThreshold[electron_count] = (*Electrons)[i].pfIsolationVariables().sumPhotonEtHighThreshold;
+	  electron_r03_sumPUPt[electron_count] = (*Electrons)[i].pfIsolationVariables().sumPUPt;
+
 	  
 	  electron_gapinfo[electron_count] = 0;
 	  electron_gapinfo[electron_count] |= (*Electrons)[i].isEB() << 0;
