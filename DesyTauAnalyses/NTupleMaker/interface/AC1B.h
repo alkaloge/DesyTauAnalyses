@@ -141,6 +141,17 @@ public :
    Float_t         electron_neutralHadIso[100];   //[electron_count]
    Float_t         electron_photonIso[100];   //[electron_count]
    Float_t         electron_puIso[100];   //[electron_count]
+   
+   Float_t         electron_r03_sumChargedHadronPt[100];   //[electron_count]
+   Float_t         electron_r03_sumChargedParticlePt[100];   //[electron_count]
+   Float_t         electron_r03_sumNeutralHadronEt[100];   //[electron_count]
+   Float_t         electron_r03_sumPhotonEt[100];   //[electron_count]
+   Float_t	   electron_r03_sumNeutralHadronEtHighThreshold[100];
+   Float_t	   electron_r03_sumPhotonEtHighThreshold[100];
+   Float_t	   electron_r03_sumPUPt[100];
+    
+   Float_t	   rho[100];
+
    UChar_t         electron_nhits[100];   //[electron_count]
    UChar_t         electron_npixelhits[100];   //[electron_count]
    UChar_t         electron_nmissinghits[100];   //[electron_count]
@@ -400,6 +411,18 @@ public :
    TBranch        *b_electron_neutralHadIso;   //!
    TBranch        *b_electron_photonIso;   //!
    TBranch        *b_electron_puIso;   //!
+   
+   
+   TBranch         *b_electron_r03_sumChargedHadronPt;   //[electron_count]
+   TBranch         *b_electron_r03_sumChargedParticlePt;   //[electron_count]
+   TBranch         *b_electron_r03_sumNeutralHadronEt;   //[electron_count]
+   TBranch         *b_electron_r03_sumPhotonEt;   //[electron_count]
+   TBranch	   *b_electron_r03_sumNeutralHadronEtHighThreshold;
+   TBranch	   *b_electron_r03_sumPhotonEtHighThreshold;
+   TBranch	   *b_electron_r03_sumPUPt;
+    
+   TBranch	   *b_rho;
+   
    TBranch        *b_electron_nhits;   //!
    TBranch        *b_electron_npixelhits;   //!
    TBranch        *b_electron_nmissinghits;   //!
@@ -750,6 +773,22 @@ void AC1B::Init(TTree *tree)
    fChain->SetBranchAddress("electron_neutralHadIso", electron_neutralHadIso, &b_electron_neutralHadIso);
    fChain->SetBranchAddress("electron_photonIso", electron_photonIso, &b_electron_photonIso);
    fChain->SetBranchAddress("electron_puIso", electron_puIso, &b_electron_puIso);
+ 
+ 
+ 
+ 
+   fChain->SetBranchAddress("electron_r03_sumChargedHadronPt" , electron_r03_sumChargedHadronPt, &b_electron_r03_sumChargedHadronPt);
+   fChain->SetBranchAddress("electron_r03_sumChargedParticlePt",electron_r03_sumChargedParticlePt, &b_electron_r03_sumChargedParticlePt);
+   fChain->SetBranchAddress("electron_r03_sumNeutralHadronEt",electron_r03_sumNeutralHadronEt,&b_electron_r03_sumNeutralHadronEt);
+   fChain->SetBranchAddress("electron_r03_sumPhotonEt",electron_r03_sumPhotonEt,&b_electron_r03_sumPhotonEt);
+   fChain->SetBranchAddress("electron_r03_sumNeutralHadronEtHighThreshold",electron_r03_sumNeutralHadronEtHighThreshold,&b_electron_r03_sumNeutralHadronEtHighThreshold);
+   fChain->SetBranchAddress("electron_r03_sumPhotonEtHighThreshold",electron_r03_sumPhotonEtHighThreshold, &b_electron_r03_sumPhotonEtHighThreshold);
+   fChain->SetBranchAddress("electron_r03_sumPUPt",electron_r03_sumPUPt,&b_electron_r03_sumPUPt);
+   fChain->SetBranchAddress("rho",rho,&b_rho);
+ 
+ 
+ 
+ 
    fChain->SetBranchAddress("electron_nhits", electron_nhits, &b_electron_nhits);
    fChain->SetBranchAddress("electron_npixelhits", electron_npixelhits, &b_electron_npixelhits);
    fChain->SetBranchAddress("electron_nmissinghits", electron_nmissinghits, &b_electron_nmissinghits);
