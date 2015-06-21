@@ -530,7 +530,6 @@ bool doMuVeto=true;
     file_->Close();
     delete file_;
 }
-    hxsec->Fill(XSec);
 
     cout << endl << "Finished event loop" << endl;
     for (int i=0;i<CutNumb;++i){
@@ -576,6 +575,7 @@ bool doMuVeto=true;
   std::cout << std::endl;
   
   file->cd(SelectionSign.c_str());
+  hxsec->Fill(XSec);
   hxsec->Write();
   inputEventsH->Write();
   CutFlow->Write();
