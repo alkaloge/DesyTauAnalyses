@@ -575,7 +575,41 @@ bool doMuVeto=true;
   std::cout << "Total number of selected events = " << selEvents << std::endl;
   std::cout << std::endl;
   
-  file->cd("");
+  file->cd(SelectionSign.c_str());
+  hxsec->Write();
+  inputEventsH->Write();
+  CutFlow->Write();
+
+  muonPtAllH->Write();
+  electronPtAllH->Write();
+
+  // histograms (dilepton selection)
+  electronPtH->Write();  
+  electronEtaH ->Write();
+  muonPtH ->Write();
+  muonEtaH ->Write();
+
+  dileptonMassH ->Write();
+  dileptonPtH ->Write();
+  dileptonEtaH ->Write();
+  dileptondRH ->Write();
+  ETmissH ->Write();
+  MtH ->Write();
+  DZetaH ->Write();
+
+  // histograms (dilepton selection + DZeta cut DZeta)
+  electronPtSelH ->Write();
+  electronEtaSelH ->Write();
+  muonPtSelH  ->Write();
+  muonEtaSelH ->Write();
+
+  dileptonMassSelH ->Write();
+  dileptonPtSelH ->Write();
+  dileptonEtaSelH ->Write();
+  dileptondRSelH ->Write();
+  ETmissSelH ->Write();
+  MtSelH ->Write();
+  DZetaSelH ->Write();
 
 /*
  for(int cj = 0; cj < CutNumb; cj++)
