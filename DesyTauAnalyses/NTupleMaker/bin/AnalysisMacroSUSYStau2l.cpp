@@ -128,7 +128,7 @@ int CutNumb = int(CutList.size());
 
 	
 if (SelectionSign !="OS" && SelectionSign !="SS") {
-       cout <<" Wrong selection...you should use 2l as input "<<endl;
+       cout <<" Wrong selection...you should use OS or SS  as input "<<endl;
    //    SelectionSign="2l";
        return 1;
 }       
@@ -501,7 +501,7 @@ if (SelectionSign !="OS" && SelectionSign !="SS") {
             if (analysisTree.pfjet_btag[ib][6]  > bTag) btagged = true;
   		  //cout<<" pfjet_b "<<ib<<"  "<<analysisTree.pfjet_btag[ib][6]<<endl;
 	  }
-	  if (btagged) continue;
+	  //if (btagged) continue;
 
           // Jets
 	  FillMainHists(iCut, EvWeight, ElMV, MuMV, JetsMV,METV, analysisTree);
@@ -683,6 +683,7 @@ if (SelectionSign !="OS" && SelectionSign !="SS") {
   std::cout << std::endl;
   
   file->cd(SelectionSign.c_str());
+  hxsec->Fill(XSec);
   hxsec->Write();
   inputEventsH->Write();
   CutFlow->Write();

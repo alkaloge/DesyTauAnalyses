@@ -775,8 +775,6 @@ void AC1B::Init(TTree *tree)
    fChain->SetBranchAddress("electron_puIso", electron_puIso, &b_electron_puIso);
  
  
- 
- 
    fChain->SetBranchAddress("electron_r03_sumChargedHadronPt" , electron_r03_sumChargedHadronPt, &b_electron_r03_sumChargedHadronPt);
    fChain->SetBranchAddress("electron_r03_sumChargedParticlePt",electron_r03_sumChargedParticlePt, &b_electron_r03_sumChargedParticlePt);
    fChain->SetBranchAddress("electron_r03_sumNeutralHadronEt",electron_r03_sumNeutralHadronEt,&b_electron_r03_sumNeutralHadronEt);
