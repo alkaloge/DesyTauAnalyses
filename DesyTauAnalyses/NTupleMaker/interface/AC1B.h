@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Fri Apr 24 13:25:05 2015 by ROOT version 5.34/18
+// Sat Jun 20 02:19:26 2015 by ROOT version 5.34/18
 // from TTree AC1B/AC1B
-// found on file: /nfs/dust/cms/user/anayak/CMS/Ntuple_HttAnalysis/Sync2015/HiggsSM/VBFHToTauTau_M-125_MC_TauTau_v1/ntuple_VBF125_13TeV_Phys14_v1.root
+// found on file: /nfs/dust/cms/user/rasp/ntuples/MC_PHYS14/VBF_HToTauTau_M-125_13TeV-powheg-pythia6/VBF_HToTauTau_M-125_13TeV-powheg-pythia6_1.root
 //////////////////////////////////////////////////////////
 
 #ifndef AC1B_h
@@ -18,8 +18,8 @@
 #include <utility>
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
-const Int_t kMaxhltriggerresults = 8;
-const Int_t kMaxhltriggerprescales = 8;
+const Int_t kMaxhltriggerresults = 11;
+const Int_t kMaxhltriggerprescales = 11;
 
 class AC1B {
 public :
@@ -36,6 +36,7 @@ public :
    UChar_t         trigger_level1bits[8];
    UChar_t         trigger_level1[128];
    UChar_t         trigger_HLT[128];
+   Float_t         rho;
    UInt_t          primvertex_count;
    Float_t         primvertex_x;
    Float_t         primvertex_y;
@@ -46,7 +47,6 @@ public :
    Int_t           primvertex_ntracks;
    Float_t         primvertex_cov[6];
    UInt_t          muon_count;
-   Float_t          muon_miniISO[100];
    Float_t         muon_px[100];   //[muon_count]
    Float_t         muon_py[100];   //[muon_count]
    Float_t         muon_pz[100];   //[muon_count]
@@ -58,6 +58,7 @@ public :
    Float_t         muon_normChi2[100];   //[muon_count]
    Float_t         muon_ndof[100];   //[muon_count]
    Float_t         muon_charge[100];   //[muon_count]
+   Float_t         muon_miniISO[100];   //[muon_count]
    Float_t         muon_combQ_chi2LocalPosition[100];   //[muon_count]
    Float_t         muon_combQ_trkKink[100];   //[muon_count]
    Float_t         muon_validFraction[100];   //[muon_count]
@@ -74,6 +75,20 @@ public :
    Float_t         muon_neutralHadIso[100];   //[muon_count]
    Float_t         muon_photonIso[100];   //[muon_count]
    Float_t         muon_puIso[100];   //[muon_count]
+   Float_t         muon_r03_sumChargedHadronPt[100];   //[muon_count]
+   Float_t         muon_r03_sumChargedParticlePt[100];   //[muon_count]
+   Float_t         muon_r03_sumNeutralHadronEt[100];   //[muon_count]
+   Float_t         muon_r03_sumPhotonEt[100];   //[muon_count]
+   Float_t         muon_r03_sumNeutralHadronEtHighThreshold[100];   //[muon_count]
+   Float_t         muon_r03_sumPhotonEtHighThreshold[100];   //[muon_count]
+   Float_t         muon_r03_sumPUPt[100];   //[muon_count]
+   Float_t         muon_r04_sumChargedHadronPt[100];   //[muon_count]
+   Float_t         muon_r04_sumChargedParticlePt[100];   //[muon_count]
+   Float_t         muon_r04_sumNeutralHadronEt[100];   //[muon_count]
+   Float_t         muon_r04_sumPhotonEt[100];   //[muon_count]
+   Float_t         muon_r04_sumNeutralHadronEtHighThreshold[100];   //[muon_count]
+   Float_t         muon_r04_sumPhotonEtHighThreshold[100];   //[muon_count]
+   Float_t         muon_r04_sumPUPt[100];   //[muon_count]
    Bool_t          muon_isPF[100];   //[muon_count]
    Bool_t          muon_isGlobal[100];   //[muon_count]
    Bool_t          muon_isTracker[100];   //[muon_count]
@@ -81,29 +96,28 @@ public :
    Bool_t          muon_isLoose[100];   //[muon_count]
    Bool_t          muon_isMedium[100];   //[muon_count]
    UInt_t          pfjet_count;
-   Float_t         pfjet_e[100];   //[pfjet_count]
-   Float_t         pfjet_px[100];   //[pfjet_count]
-   Float_t         pfjet_py[100];   //[pfjet_count]
-   Float_t         pfjet_pz[100];   //[pfjet_count]
-   Float_t         pfjet_pt[100];   //[pfjet_count]
-   Float_t         pfjet_eta[100];   //[pfjet_count]
-   Float_t         pfjet_phi[100];   //[pfjet_count]
-   Float_t         pfjet_neutralhadronicenergy[100];   //[pfjet_count]
-   Float_t         pfjet_chargedhadronicenergy[100];   //[pfjet_count]
-   Float_t         pfjet_neutralemenergy[100];   //[pfjet_count]
-   Float_t         pfjet_chargedemenergy[100];   //[pfjet_count]
-   UInt_t          pfjet_chargedmulti[100];   //[pfjet_count]
-   UInt_t          pfjet_neutralmulti[100];   //[pfjet_count]
-   UInt_t          pfjet_chargedhadronmulti[100];   //[pfjet_count]
-   Float_t         pfjet_energycorr[100];   //[pfjet_count]
-   Float_t         pfjet_energycorr_l1fastjet[100];   //[pfjet_count]
-   Float_t         pfjet_energycorr_l2relative[100];   //[pfjet_count]
-   Float_t         pfjet_energycorr_l3absolute[100];   //[pfjet_count]
-   Float_t         pfjet_pu_jet_full_mva[100];   //[pfjet_count]
-   Int_t           pfjet_flavour[100];   //[pfjet_count]
-   Float_t         pfjet_btag[100][10];   //[pfjet_count]
+   Float_t         pfjet_e[1000];   //[pfjet_count]
+   Float_t         pfjet_px[1000];   //[pfjet_count]
+   Float_t         pfjet_py[1000];   //[pfjet_count]
+   Float_t         pfjet_pz[1000];   //[pfjet_count]
+   Float_t         pfjet_pt[1000];   //[pfjet_count]
+   Float_t         pfjet_eta[1000];   //[pfjet_count]
+   Float_t         pfjet_phi[1000];   //[pfjet_count]
+   Float_t         pfjet_neutralhadronicenergy[1000];   //[pfjet_count]
+   Float_t         pfjet_chargedhadronicenergy[1000];   //[pfjet_count]
+   Float_t         pfjet_neutralemenergy[1000];   //[pfjet_count]
+   Float_t         pfjet_chargedemenergy[1000];   //[pfjet_count]
+   UInt_t          pfjet_chargedmulti[1000];   //[pfjet_count]
+   UInt_t          pfjet_neutralmulti[1000];   //[pfjet_count]
+   UInt_t          pfjet_chargedhadronmulti[1000];   //[pfjet_count]
+   Float_t         pfjet_energycorr[1000];   //[pfjet_count]
+   Float_t         pfjet_energycorr_l1fastjet[1000];   //[pfjet_count]
+   Float_t         pfjet_energycorr_l2relative[1000];   //[pfjet_count]
+   Float_t         pfjet_energycorr_l3absolute[1000];   //[pfjet_count]
+   Float_t         pfjet_pu_jet_full_mva[1000];   //[pfjet_count]
+   Int_t           pfjet_flavour[1000];   //[pfjet_count]
+   Float_t         pfjet_btag[1000][10];   //[pfjet_count]
    UInt_t          electron_count;
-   Float_t          electron_miniISO[100];
    Float_t         electron_px[100];   //[electron_count]
    Float_t         electron_py[100];   //[electron_count]
    Float_t         electron_pz[100];   //[electron_count]
@@ -132,6 +146,7 @@ public :
    Float_t         electron_ehcaloverecaldepth2[100];   //[electron_count]
    Float_t         electron_full5x5_sigmaietaieta[100];   //[electron_count]
    Float_t         electron_ooemoop[100];   //[electron_count]
+   Float_t         electron_miniISO[100];   //[electron_count]
    Float_t         electron_superclusterEta[100];   //[electron_count]
    Float_t         electron_superclusterPhi[100];   //[electron_count]
    Float_t         electron_superclusterX[100];   //[electron_count]
@@ -141,17 +156,13 @@ public :
    Float_t         electron_neutralHadIso[100];   //[electron_count]
    Float_t         electron_photonIso[100];   //[electron_count]
    Float_t         electron_puIso[100];   //[electron_count]
-   
    Float_t         electron_r03_sumChargedHadronPt[100];   //[electron_count]
    Float_t         electron_r03_sumChargedParticlePt[100];   //[electron_count]
    Float_t         electron_r03_sumNeutralHadronEt[100];   //[electron_count]
    Float_t         electron_r03_sumPhotonEt[100];   //[electron_count]
-   Float_t	   electron_r03_sumNeutralHadronEtHighThreshold[100];
-   Float_t	   electron_r03_sumPhotonEtHighThreshold[100];
-   Float_t	   electron_r03_sumPUPt[100];
-    
-   Float_t	   rho[100];
-
+   Float_t         electron_r03_sumNeutralHadronEtHighThreshold[100];   //[electron_count]
+   Float_t         electron_r03_sumPhotonEtHighThreshold[100];   //[electron_count]
+   Float_t         electron_r03_sumPUPt[100];   //[electron_count]
    UChar_t         electron_nhits[100];   //[electron_count]
    UChar_t         electron_npixelhits[100];   //[electron_count]
    UChar_t         electron_nmissinghits[100];   //[electron_count]
@@ -205,8 +216,10 @@ public :
    Float_t         tau_againstMuonLoose3[100];   //[tau_count]
    Float_t         tau_againstMuonTight3[100];   //[tau_count]
    Float_t         tau_againstElectronVLooseMVA5[100];   //[tau_count]
+   Float_t         tau_againstElectronVTightMVA5[100];   //[tau_count]
    Float_t         tau_againstElectronLooseMVA5[100];   //[tau_count]
    Float_t         tau_againstElectronMediumMVA5[100];   //[tau_count]
+   Float_t         tau_againstElectronTightMVA5[100];   //[tau_count]
    UInt_t          tau_ntracks_pt05[100];   //[tau_count]
    UInt_t          tau_ntracks_pt08[100];   //[tau_count]
    UInt_t          tau_ntracks_pt1[100];   //[tau_count]
@@ -232,6 +245,14 @@ public :
    Float_t         pfmet_sigyy;
    Float_t         genmet_ex;
    Float_t         genmet_ey;
+   UInt_t          mvamet_count;
+   Float_t         mvamet_ex[4];   //[mvamet_count]
+   Float_t         mvamet_ey[4];   //[mvamet_count]
+   Float_t         mvamet_sigxx[4];   //[mvamet_count]
+   Float_t         mvamet_sigxy[4];   //[mvamet_count]
+   Float_t         mvamet_sigyx[4];   //[mvamet_count]
+   Float_t         mvamet_sigyy[4];   //[mvamet_count]
+   UChar_t         mvamet_channel[4];   //[mvamet_count]
    Float_t         genweight;
    Float_t         genid1;
    Float_t         genx1;
@@ -257,7 +278,7 @@ public :
    Float_t         gentau_visible_mass[100];   //[gentau_count]
    Int_t           gentau_decayMode[100];   //[gentau_count]
    Char_t          gentau_decayMode_name[100];   //[gentau_count]
-   Char_t          gentau_mother[100];   //[gentau_count]
+   UChar_t         gentau_mother[100];   //[gentau_count]
    UInt_t          genparticles_count;
    Float_t         genparticles_e[100];   //[genparticles_count]
    Float_t         genparticles_px[100];   //[genparticles_count]
@@ -269,7 +290,7 @@ public :
    Int_t           genparticles_pdgid[100];   //[genparticles_count]
    Int_t           genparticles_status[100];   //[genparticles_count]
    UInt_t          genparticles_info[100];   //[genparticles_count]
-   Char_t          genparticles_mother[100];   //[genparticles_count]
+   UChar_t         genparticles_mother[100];   //[genparticles_count]
    UInt_t          trigobject_count;
    Float_t         trigobject_px[100];   //[trigobject_count]
    Float_t         trigobject_py[100];   //[trigobject_count]
@@ -306,6 +327,7 @@ public :
    TBranch        *b_trigger_level1bits;   //!
    TBranch        *b_trigger_level1;   //!
    TBranch        *b_trigger_HLT;   //!
+   TBranch        *b_rho;   //!
    TBranch        *b_primvertex_count;   //!
    TBranch        *b_primvertex_x;   //!
    TBranch        *b_primvertex_y;   //!
@@ -344,6 +366,20 @@ public :
    TBranch        *b_muon_neutralHadIso;   //!
    TBranch        *b_muon_photonIso;   //!
    TBranch        *b_muon_puIso;   //!
+   TBranch        *b_muon_r03_sumChargedHadronPt;   //!
+   TBranch        *b_muon_r03_sumChargedParticlePt;   //!
+   TBranch        *b_muon_r03_sumNeutralHadronEt;   //!
+   TBranch        *b_muon_r03_sumPhotonEt;   //!
+   TBranch        *b_muon_r03_sumNeutralHadronEtHighThreshold;   //!
+   TBranch        *b_muon_r03_sumPhotonEtHighThreshold;   //!
+   TBranch        *b_muon_r03_sumPUPt;   //!
+   TBranch        *b_muon_r04_sumChargedHadronPt;   //!
+   TBranch        *b_muon_r04_sumChargedParticlePt;   //!
+   TBranch        *b_muon_r04_sumNeutralHadronEt;   //!
+   TBranch        *b_muon_r04_sumPhotonEt;   //!
+   TBranch        *b_muon_r04_sumNeutralHadronEtHighThreshold;   //!
+   TBranch        *b_muon_r04_sumPhotonEtHighThreshold;   //!
+   TBranch        *b_muon_r04_sumPUPt;   //!
    TBranch        *b_muon_isPF;   //!
    TBranch        *b_muon_isGlobal;   //!
    TBranch        *b_muon_isTracker;   //!
@@ -373,7 +409,6 @@ public :
    TBranch        *b_pfjet_flavour;   //!
    TBranch        *b_pfjet_btag;   //!
    TBranch        *b_electron_count;   //!
-   TBranch        *b_electron_miniISO;   //!
    TBranch        *b_electron_px;   //!
    TBranch        *b_electron_py;   //!
    TBranch        *b_electron_pz;   //!
@@ -402,6 +437,7 @@ public :
    TBranch        *b_electron_ehcaloverecaldepth2;   //!
    TBranch        *b_electron_full5x5_sigmaietaieta;   //!
    TBranch        *b_electron_ooemoop;   //!
+   TBranch        *b_electron_miniISO;   //!
    TBranch        *b_electron_superclusterEta;   //!
    TBranch        *b_electron_superclusterPhi;   //!
    TBranch        *b_electron_superclusterX;   //!
@@ -411,18 +447,13 @@ public :
    TBranch        *b_electron_neutralHadIso;   //!
    TBranch        *b_electron_photonIso;   //!
    TBranch        *b_electron_puIso;   //!
-   
-   
-   TBranch         *b_electron_r03_sumChargedHadronPt;   //[electron_count]
-   TBranch         *b_electron_r03_sumChargedParticlePt;   //[electron_count]
-   TBranch         *b_electron_r03_sumNeutralHadronEt;   //[electron_count]
-   TBranch         *b_electron_r03_sumPhotonEt;   //[electron_count]
-   TBranch	   *b_electron_r03_sumNeutralHadronEtHighThreshold;
-   TBranch	   *b_electron_r03_sumPhotonEtHighThreshold;
-   TBranch	   *b_electron_r03_sumPUPt;
-    
-   TBranch	   *b_rho;
-   
+   TBranch        *b_electron_r03_sumChargedHadronPt;   //!
+   TBranch        *b_electron_r03_sumChargedParticlePt;   //!
+   TBranch        *b_electron_r03_sumNeutralHadronEt;   //!
+   TBranch        *b_electron_r03_sumPhotonEt;   //!
+   TBranch        *b_electron_r03_sumNeutralHadronEtHighThreshold;   //!
+   TBranch        *b_electron_r03_sumPhotonEtHighThreshold;   //!
+   TBranch        *b_electron_r03_sumPUPt;   //!
    TBranch        *b_electron_nhits;   //!
    TBranch        *b_electron_npixelhits;   //!
    TBranch        *b_electron_nmissinghits;   //!
@@ -476,8 +507,10 @@ public :
    TBranch        *b_tau_againstMuonLoose3;   //!
    TBranch        *b_tau_againstMuonTight3;   //!
    TBranch        *b_tau_againstElectronVLooseMVA5;   //!
+   TBranch        *b_tau_againstElectronVTightMVA5;   //!
    TBranch        *b_tau_againstElectronLooseMVA5;   //!
    TBranch        *b_tau_againstElectronMediumMVA5;   //!
+   TBranch        *b_tau_againstElectronTightMVA5;   //!
    TBranch        *b_tau_ntracks_pt05;   //!
    TBranch        *b_tau_ntracks_pt08;   //!
    TBranch        *b_tau_ntracks_pt1;   //!
@@ -503,6 +536,14 @@ public :
    TBranch        *b_pfmet_sigyy;   //!
    TBranch        *b_genmet_ex;   //!
    TBranch        *b_genmet_ey;   //!
+   TBranch        *b_mvamet_count;   //!
+   TBranch        *b_mvamet_ex;   //!
+   TBranch        *b_mvamet_ey;   //!
+   TBranch        *b_mvamet_sigxx;   //!
+   TBranch        *b_mvamet_sigxy;   //!
+   TBranch        *b_mvamet_sigyx;   //!
+   TBranch        *b_mvamet_sigyy;   //!
+   TBranch        *b_mvamet_channel;   //!
    TBranch        *b_genweight;   //!
    TBranch        *b_genid1;   //!
    TBranch        *b_genx1;   //!
@@ -587,11 +628,11 @@ AC1B::AC1B(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/nfs/dust/cms/user/anayak/CMS/Ntuple_HttAnalysis/Sync2015/HiggsSM/VBFHToTauTau_M-125_MC_TauTau_v1/ntuple_VBF125_13TeV_Phys14_v1.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/nfs/dust/cms/user/rasp/ntuples/MC_PHYS14/VBF_HToTauTau_M-125_13TeV-powheg-pythia6/VBF_HToTauTau_M-125_13TeV-powheg-pythia6_1.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("/nfs/dust/cms/user/anayak/CMS/Ntuple_HttAnalysis/Sync2015/HiggsSM/VBFHToTauTau_M-125_MC_TauTau_v1/ntuple_VBF125_13TeV_Phys14_v1.root");
+         f = new TFile("/nfs/dust/cms/user/rasp/ntuples/MC_PHYS14/VBF_HToTauTau_M-125_13TeV-powheg-pythia6/VBF_HToTauTau_M-125_13TeV-powheg-pythia6_1.root");
       }
-      TDirectory * dir = (TDirectory*)f->Get("/nfs/dust/cms/user/anayak/CMS/Ntuple_HttAnalysis/Sync2015/HiggsSM/VBFHToTauTau_M-125_MC_TauTau_v1/ntuple_VBF125_13TeV_Phys14_v1.root:/makeroottree");
+      TDirectory * dir = (TDirectory*)f->Get("/nfs/dust/cms/user/rasp/ntuples/MC_PHYS14/VBF_HToTauTau_M-125_13TeV-powheg-pythia6/VBF_HToTauTau_M-125_13TeV-powheg-pythia6_1.root:/makeroottree");
       dir->GetObject("AC1B",tree);
 
    }
@@ -610,14 +651,12 @@ Int_t AC1B::GetEntry(Long64_t entry)
    if (!fChain) return 0;
    return fChain->GetEntry(entry);
 }
-
 Long64_t AC1B::GetEntries()
 {
 // Read contents of entry.
    if (!fChain) return 0;
    return fChain->GetEntries();
 }
-
 Long64_t AC1B::LoadTree(Long64_t entry)
 {
 // Set the environment to read one entry
@@ -668,6 +707,7 @@ void AC1B::Init(TTree *tree)
    fChain->SetBranchAddress("trigger_level1bits", trigger_level1bits, &b_trigger_level1bits);
    fChain->SetBranchAddress("trigger_level1", trigger_level1, &b_trigger_level1);
    fChain->SetBranchAddress("trigger_HLT", trigger_HLT, &b_trigger_HLT);
+   fChain->SetBranchAddress("rho", &rho, &b_rho);
    fChain->SetBranchAddress("primvertex_count", &primvertex_count, &b_primvertex_count);
    fChain->SetBranchAddress("primvertex_x", &primvertex_x, &b_primvertex_x);
    fChain->SetBranchAddress("primvertex_y", &primvertex_y, &b_primvertex_y);
@@ -678,7 +718,6 @@ void AC1B::Init(TTree *tree)
    fChain->SetBranchAddress("primvertex_ntracks", &primvertex_ntracks, &b_primvertex_ntracks);
    fChain->SetBranchAddress("primvertex_cov", primvertex_cov, &b_primvertex_cov);
    fChain->SetBranchAddress("muon_count", &muon_count, &b_muon_count);
-   fChain->SetBranchAddress("muon_miniISO", &muon_miniISO, &b_muon_miniISO);
    fChain->SetBranchAddress("muon_px", muon_px, &b_muon_px);
    fChain->SetBranchAddress("muon_py", muon_py, &b_muon_py);
    fChain->SetBranchAddress("muon_pz", muon_pz, &b_muon_pz);
@@ -690,6 +729,7 @@ void AC1B::Init(TTree *tree)
    fChain->SetBranchAddress("muon_normChi2", muon_normChi2, &b_muon_normChi2);
    fChain->SetBranchAddress("muon_ndof", muon_ndof, &b_muon_ndof);
    fChain->SetBranchAddress("muon_charge", muon_charge, &b_muon_charge);
+   fChain->SetBranchAddress("muon_miniISO", muon_miniISO, &b_muon_miniISO);
    fChain->SetBranchAddress("muon_combQ_chi2LocalPosition", muon_combQ_chi2LocalPosition, &b_muon_combQ_chi2LocalPosition);
    fChain->SetBranchAddress("muon_combQ_trkKink", muon_combQ_trkKink, &b_muon_combQ_trkKink);
    fChain->SetBranchAddress("muon_validFraction", muon_validFraction, &b_muon_validFraction);
@@ -706,6 +746,20 @@ void AC1B::Init(TTree *tree)
    fChain->SetBranchAddress("muon_neutralHadIso", muon_neutralHadIso, &b_muon_neutralHadIso);
    fChain->SetBranchAddress("muon_photonIso", muon_photonIso, &b_muon_photonIso);
    fChain->SetBranchAddress("muon_puIso", muon_puIso, &b_muon_puIso);
+   fChain->SetBranchAddress("muon_r03_sumChargedHadronPt", muon_r03_sumChargedHadronPt, &b_muon_r03_sumChargedHadronPt);
+   fChain->SetBranchAddress("muon_r03_sumChargedParticlePt", muon_r03_sumChargedParticlePt, &b_muon_r03_sumChargedParticlePt);
+   fChain->SetBranchAddress("muon_r03_sumNeutralHadronEt", muon_r03_sumNeutralHadronEt, &b_muon_r03_sumNeutralHadronEt);
+   fChain->SetBranchAddress("muon_r03_sumPhotonEt", muon_r03_sumPhotonEt, &b_muon_r03_sumPhotonEt);
+   fChain->SetBranchAddress("muon_r03_sumNeutralHadronEtHighThreshold", muon_r03_sumNeutralHadronEtHighThreshold, &b_muon_r03_sumNeutralHadronEtHighThreshold);
+   fChain->SetBranchAddress("muon_r03_sumPhotonEtHighThreshold", muon_r03_sumPhotonEtHighThreshold, &b_muon_r03_sumPhotonEtHighThreshold);
+   fChain->SetBranchAddress("muon_r03_sumPUPt", muon_r03_sumPUPt, &b_muon_r03_sumPUPt);
+   fChain->SetBranchAddress("muon_r04_sumChargedHadronPt", muon_r04_sumChargedHadronPt, &b_muon_r04_sumChargedHadronPt);
+   fChain->SetBranchAddress("muon_r04_sumChargedParticlePt", muon_r04_sumChargedParticlePt, &b_muon_r04_sumChargedParticlePt);
+   fChain->SetBranchAddress("muon_r04_sumNeutralHadronEt", muon_r04_sumNeutralHadronEt, &b_muon_r04_sumNeutralHadronEt);
+   fChain->SetBranchAddress("muon_r04_sumPhotonEt", muon_r04_sumPhotonEt, &b_muon_r04_sumPhotonEt);
+   fChain->SetBranchAddress("muon_r04_sumNeutralHadronEtHighThreshold", muon_r04_sumNeutralHadronEtHighThreshold, &b_muon_r04_sumNeutralHadronEtHighThreshold);
+   fChain->SetBranchAddress("muon_r04_sumPhotonEtHighThreshold", muon_r04_sumPhotonEtHighThreshold, &b_muon_r04_sumPhotonEtHighThreshold);
+   fChain->SetBranchAddress("muon_r04_sumPUPt", muon_r04_sumPUPt, &b_muon_r04_sumPUPt);
    fChain->SetBranchAddress("muon_isPF", muon_isPF, &b_muon_isPF);
    fChain->SetBranchAddress("muon_isGlobal", muon_isGlobal, &b_muon_isGlobal);
    fChain->SetBranchAddress("muon_isTracker", muon_isTracker, &b_muon_isTracker);
@@ -713,29 +767,28 @@ void AC1B::Init(TTree *tree)
    fChain->SetBranchAddress("muon_isLoose", muon_isLoose, &b_muon_isLoose);
    fChain->SetBranchAddress("muon_isMedium", muon_isMedium, &b_muon_isMedium);
    fChain->SetBranchAddress("pfjet_count", &pfjet_count, &b_pfjet_count);
-   fChain->SetBranchAddress("pfjet_e", pfjet_e, &b_pfjet_e);
-   fChain->SetBranchAddress("pfjet_px", pfjet_px, &b_pfjet_px);
-   fChain->SetBranchAddress("pfjet_py", pfjet_py, &b_pfjet_py);
-   fChain->SetBranchAddress("pfjet_pz", pfjet_pz, &b_pfjet_pz);
-   fChain->SetBranchAddress("pfjet_pt", pfjet_pt, &b_pfjet_pt);
-   fChain->SetBranchAddress("pfjet_eta", pfjet_eta, &b_pfjet_eta);
-   fChain->SetBranchAddress("pfjet_phi", pfjet_phi, &b_pfjet_phi);
-   fChain->SetBranchAddress("pfjet_neutralhadronicenergy", pfjet_neutralhadronicenergy, &b_pfjet_neutralhadronicenergy);
-   fChain->SetBranchAddress("pfjet_chargedhadronicenergy", pfjet_chargedhadronicenergy, &b_pfjet_chargedhadronicenergy);
-   fChain->SetBranchAddress("pfjet_neutralemenergy", pfjet_neutralemenergy, &b_pfjet_neutralemenergy);
-   fChain->SetBranchAddress("pfjet_chargedemenergy", pfjet_chargedemenergy, &b_pfjet_chargedemenergy);
-   fChain->SetBranchAddress("pfjet_chargedmulti", pfjet_chargedmulti, &b_pfjet_chargedmulti);
-   fChain->SetBranchAddress("pfjet_neutralmulti", pfjet_neutralmulti, &b_pfjet_neutralmulti);
-   fChain->SetBranchAddress("pfjet_chargedhadronmulti", pfjet_chargedhadronmulti, &b_pfjet_chargedhadronmulti);
-   fChain->SetBranchAddress("pfjet_energycorr", pfjet_energycorr, &b_pfjet_energycorr);
-   fChain->SetBranchAddress("pfjet_energycorr_l1fastjet", pfjet_energycorr_l1fastjet, &b_pfjet_energycorr_l1fastjet);
-   fChain->SetBranchAddress("pfjet_energycorr_l2relative", pfjet_energycorr_l2relative, &b_pfjet_energycorr_l2relative);
-   fChain->SetBranchAddress("pfjet_energycorr_l3absolute", pfjet_energycorr_l3absolute, &b_pfjet_energycorr_l3absolute);
-   fChain->SetBranchAddress("pfjet_pu_jet_full_mva", pfjet_pu_jet_full_mva, &b_pfjet_pu_jet_full_mva);
-   fChain->SetBranchAddress("pfjet_flavour", pfjet_flavour, &b_pfjet_flavour);
-   fChain->SetBranchAddress("pfjet_btag", pfjet_btag, &b_pfjet_btag);
+   fChain->SetBranchAddress("pfjet_e", &pfjet_e, &b_pfjet_e);
+   fChain->SetBranchAddress("pfjet_px", &pfjet_px, &b_pfjet_px);
+   fChain->SetBranchAddress("pfjet_py", &pfjet_py, &b_pfjet_py);
+   fChain->SetBranchAddress("pfjet_pz", &pfjet_pz, &b_pfjet_pz);
+   fChain->SetBranchAddress("pfjet_pt", &pfjet_pt, &b_pfjet_pt);
+   fChain->SetBranchAddress("pfjet_eta", &pfjet_eta, &b_pfjet_eta);
+   fChain->SetBranchAddress("pfjet_phi", &pfjet_phi, &b_pfjet_phi);
+   fChain->SetBranchAddress("pfjet_neutralhadronicenergy", &pfjet_neutralhadronicenergy, &b_pfjet_neutralhadronicenergy);
+   fChain->SetBranchAddress("pfjet_chargedhadronicenergy", &pfjet_chargedhadronicenergy, &b_pfjet_chargedhadronicenergy);
+   fChain->SetBranchAddress("pfjet_neutralemenergy", &pfjet_neutralemenergy, &b_pfjet_neutralemenergy);
+   fChain->SetBranchAddress("pfjet_chargedemenergy", &pfjet_chargedemenergy, &b_pfjet_chargedemenergy);
+   fChain->SetBranchAddress("pfjet_chargedmulti", &pfjet_chargedmulti, &b_pfjet_chargedmulti);
+   fChain->SetBranchAddress("pfjet_neutralmulti", &pfjet_neutralmulti, &b_pfjet_neutralmulti);
+   fChain->SetBranchAddress("pfjet_chargedhadronmulti", &pfjet_chargedhadronmulti, &b_pfjet_chargedhadronmulti);
+   fChain->SetBranchAddress("pfjet_energycorr", &pfjet_energycorr, &b_pfjet_energycorr);
+   fChain->SetBranchAddress("pfjet_energycorr_l1fastjet", &pfjet_energycorr_l1fastjet, &b_pfjet_energycorr_l1fastjet);
+   fChain->SetBranchAddress("pfjet_energycorr_l2relative", &pfjet_energycorr_l2relative, &b_pfjet_energycorr_l2relative);
+   fChain->SetBranchAddress("pfjet_energycorr_l3absolute", &pfjet_energycorr_l3absolute, &b_pfjet_energycorr_l3absolute);
+   fChain->SetBranchAddress("pfjet_pu_jet_full_mva", &pfjet_pu_jet_full_mva, &b_pfjet_pu_jet_full_mva);
+   fChain->SetBranchAddress("pfjet_flavour", &pfjet_flavour, &b_pfjet_flavour);
+   fChain->SetBranchAddress("pfjet_btag", &pfjet_btag, &b_pfjet_btag);
    fChain->SetBranchAddress("electron_count", &electron_count, &b_electron_count);
-   fChain->SetBranchAddress("electron_miniISO", &electron_miniISO, &b_electron_miniISO);
    fChain->SetBranchAddress("electron_px", electron_px, &b_electron_px);
    fChain->SetBranchAddress("electron_py", electron_py, &b_electron_py);
    fChain->SetBranchAddress("electron_pz", electron_pz, &b_electron_pz);
@@ -764,6 +817,7 @@ void AC1B::Init(TTree *tree)
    fChain->SetBranchAddress("electron_ehcaloverecaldepth2", electron_ehcaloverecaldepth2, &b_electron_ehcaloverecaldepth2);
    fChain->SetBranchAddress("electron_full5x5_sigmaietaieta", electron_full5x5_sigmaietaieta, &b_electron_full5x5_sigmaietaieta);
    fChain->SetBranchAddress("electron_ooemoop", electron_ooemoop, &b_electron_ooemoop);
+   fChain->SetBranchAddress("electron_miniISO", electron_miniISO, &b_electron_miniISO);
    fChain->SetBranchAddress("electron_superclusterEta", electron_superclusterEta, &b_electron_superclusterEta);
    fChain->SetBranchAddress("electron_superclusterPhi", electron_superclusterPhi, &b_electron_superclusterPhi);
    fChain->SetBranchAddress("electron_superclusterX", electron_superclusterX, &b_electron_superclusterX);
@@ -773,20 +827,13 @@ void AC1B::Init(TTree *tree)
    fChain->SetBranchAddress("electron_neutralHadIso", electron_neutralHadIso, &b_electron_neutralHadIso);
    fChain->SetBranchAddress("electron_photonIso", electron_photonIso, &b_electron_photonIso);
    fChain->SetBranchAddress("electron_puIso", electron_puIso, &b_electron_puIso);
- 
- 
-   fChain->SetBranchAddress("electron_r03_sumChargedHadronPt" , electron_r03_sumChargedHadronPt, &b_electron_r03_sumChargedHadronPt);
-   fChain->SetBranchAddress("electron_r03_sumChargedParticlePt",electron_r03_sumChargedParticlePt, &b_electron_r03_sumChargedParticlePt);
-   fChain->SetBranchAddress("electron_r03_sumNeutralHadronEt",electron_r03_sumNeutralHadronEt,&b_electron_r03_sumNeutralHadronEt);
-   fChain->SetBranchAddress("electron_r03_sumPhotonEt",electron_r03_sumPhotonEt,&b_electron_r03_sumPhotonEt);
-   fChain->SetBranchAddress("electron_r03_sumNeutralHadronEtHighThreshold",electron_r03_sumNeutralHadronEtHighThreshold,&b_electron_r03_sumNeutralHadronEtHighThreshold);
-   fChain->SetBranchAddress("electron_r03_sumPhotonEtHighThreshold",electron_r03_sumPhotonEtHighThreshold, &b_electron_r03_sumPhotonEtHighThreshold);
-   fChain->SetBranchAddress("electron_r03_sumPUPt",electron_r03_sumPUPt,&b_electron_r03_sumPUPt);
-   fChain->SetBranchAddress("rho",rho,&b_rho);
- 
- 
- 
- 
+   fChain->SetBranchAddress("electron_r03_sumChargedHadronPt", electron_r03_sumChargedHadronPt, &b_electron_r03_sumChargedHadronPt);
+   fChain->SetBranchAddress("electron_r03_sumChargedParticlePt", electron_r03_sumChargedParticlePt, &b_electron_r03_sumChargedParticlePt);
+   fChain->SetBranchAddress("electron_r03_sumNeutralHadronEt", electron_r03_sumNeutralHadronEt, &b_electron_r03_sumNeutralHadronEt);
+   fChain->SetBranchAddress("electron_r03_sumPhotonEt", electron_r03_sumPhotonEt, &b_electron_r03_sumPhotonEt);
+   fChain->SetBranchAddress("electron_r03_sumNeutralHadronEtHighThreshold", electron_r03_sumNeutralHadronEtHighThreshold, &b_electron_r03_sumNeutralHadronEtHighThreshold);
+   fChain->SetBranchAddress("electron_r03_sumPhotonEtHighThreshold", electron_r03_sumPhotonEtHighThreshold, &b_electron_r03_sumPhotonEtHighThreshold);
+   fChain->SetBranchAddress("electron_r03_sumPUPt", electron_r03_sumPUPt, &b_electron_r03_sumPUPt);
    fChain->SetBranchAddress("electron_nhits", electron_nhits, &b_electron_nhits);
    fChain->SetBranchAddress("electron_npixelhits", electron_npixelhits, &b_electron_npixelhits);
    fChain->SetBranchAddress("electron_nmissinghits", electron_nmissinghits, &b_electron_nmissinghits);
@@ -840,8 +887,10 @@ void AC1B::Init(TTree *tree)
    fChain->SetBranchAddress("tau_againstMuonLoose3", tau_againstMuonLoose3, &b_tau_againstMuonLoose3);
    fChain->SetBranchAddress("tau_againstMuonTight3", tau_againstMuonTight3, &b_tau_againstMuonTight3);
    fChain->SetBranchAddress("tau_againstElectronVLooseMVA5", tau_againstElectronVLooseMVA5, &b_tau_againstElectronVLooseMVA5);
+   fChain->SetBranchAddress("tau_againstElectronVTightMVA5", tau_againstElectronVTightMVA5, &b_tau_againstElectronVTightMVA5);
    fChain->SetBranchAddress("tau_againstElectronLooseMVA5", tau_againstElectronLooseMVA5, &b_tau_againstElectronLooseMVA5);
    fChain->SetBranchAddress("tau_againstElectronMediumMVA5", tau_againstElectronMediumMVA5, &b_tau_againstElectronMediumMVA5);
+   fChain->SetBranchAddress("tau_againstElectronTightMVA5", tau_againstElectronTightMVA5, &b_tau_againstElectronTightMVA5);
    fChain->SetBranchAddress("tau_ntracks_pt05", tau_ntracks_pt05, &b_tau_ntracks_pt05);
    fChain->SetBranchAddress("tau_ntracks_pt08", tau_ntracks_pt08, &b_tau_ntracks_pt08);
    fChain->SetBranchAddress("tau_ntracks_pt1", tau_ntracks_pt1, &b_tau_ntracks_pt1);
@@ -867,6 +916,14 @@ void AC1B::Init(TTree *tree)
    fChain->SetBranchAddress("pfmet_sigyy", &pfmet_sigyy, &b_pfmet_sigyy);
    fChain->SetBranchAddress("genmet_ex", &genmet_ex, &b_genmet_ex);
    fChain->SetBranchAddress("genmet_ey", &genmet_ey, &b_genmet_ey);
+   fChain->SetBranchAddress("mvamet_count", &mvamet_count, &b_mvamet_count);
+   fChain->SetBranchAddress("mvamet_ex", mvamet_ex, &b_mvamet_ex);
+   fChain->SetBranchAddress("mvamet_ey", mvamet_ey, &b_mvamet_ey);
+   fChain->SetBranchAddress("mvamet_sigxx", mvamet_sigxx, &b_mvamet_sigxx);
+   fChain->SetBranchAddress("mvamet_sigxy", mvamet_sigxy, &b_mvamet_sigxy);
+   fChain->SetBranchAddress("mvamet_sigyx", mvamet_sigyx, &b_mvamet_sigyx);
+   fChain->SetBranchAddress("mvamet_sigyy", mvamet_sigyy, &b_mvamet_sigyy);
+   fChain->SetBranchAddress("mvamet_channel", mvamet_channel, &b_mvamet_channel);
    fChain->SetBranchAddress("genweight", &genweight, &b_genweight);
    fChain->SetBranchAddress("genid1", &genid1, &b_genid1);
    fChain->SetBranchAddress("genx1", &genx1, &b_genx1);
