@@ -618,6 +618,11 @@ void NTupleMaker::beginJob(){
     tree->Branch("trigobject_eta",trigobject_eta,"trigobject_eta[trigobject_count]/F");
     tree->Branch("trigobject_phi",trigobject_phi,"trigobject_phi[trigobject_count]/F");
     tree->Branch("trigobject_filters",trigobject_filters,"trigobject_filters[trigobject_count][50]/O");
+    tree->Branch("trigobject_isMuon",trigobject_isMuon,"trigobject_isMuon[trigobject_count]/O");
+    tree->Branch("trigobject_isElectron",trigobject_isElectron,"trigobject_isElectron[trigobject_count]/O");
+    tree->Branch("trigobject_isTau",trigobject_isTau,"trigobject_isTau[trigobject_count]/O");
+    tree->Branch("trigobject_isJet",trigobject_isJet,"trigobject_isJet[trigobject_count]/O");
+    tree->Branch("trigobject_isMET",trigobject_isMET,"trigobject_isMET[trigobject_count]/O");
   }
 
   //add these branches to main tree as well
@@ -1848,6 +1853,11 @@ unsigned int NTupleMaker::AddTriggerObjects(const edm::Event& iEvent) {
       trigobject_pt[trigobject_count] = (*triggerObjects)[iTO].pt();
       trigobject_eta[trigobject_count] = (*triggerObjects)[iTO].eta();
       trigobject_phi[trigobject_count] = (*triggerObjects)[iTO].phi();
+      trigobject_isMuon[trigobject_count] = (*triggerObjects)[iTO].hasTriggerObjectType(trigger::TriggerMuon);
+      trigobject_isElectron[trigobject_count] = (*triggerObjects)[iTO].hasTriggerObjectType(trigger::TriggerElectron);
+      trigobject_isTau[trigobject_count] = (*triggerObjects)[iTO].hasTriggerObjectType(trigger::TriggerTau);
+      trigobject_isJet[trigobject_count] = (*triggerObjects)[iTO].hasTriggerObjectType(trigger::TriggerJet);
+      trigobject_isMET[trigobject_count] = (*triggerObjects)[iTO].hasTriggerObjectType(trigger::TriggerMET);
       trigobject_count++;
       if (trigobject_count==M_trigobjectmaxcount) {
 	 cerr << "number of trigger objects > M_trigobjectmaxcount. They are missing." << endl; 

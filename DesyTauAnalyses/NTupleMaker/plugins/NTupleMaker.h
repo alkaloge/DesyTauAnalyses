@@ -798,6 +798,11 @@ class NTupleMaker : public edm::EDAnalyzer{
   Float_t trigobject_eta[M_trigobjectmaxcount];
   Float_t trigobject_phi[M_trigobjectmaxcount];
   Bool_t  trigobject_filters[M_trigobjectmaxcount][50];
+  Bool_t trigobject_isMuon[M_trigobjectmaxcount];
+  Bool_t trigobject_isElectron[M_trigobjectmaxcount];
+  Bool_t trigobject_isTau[M_trigobjectmaxcount];
+  Bool_t trigobject_isJet[M_trigobjectmaxcount];
+  Bool_t trigobject_isMET[M_trigobjectmaxcount];
 
   //lumitree
   UInt_t lumi_run;
