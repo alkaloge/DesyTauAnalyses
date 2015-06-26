@@ -35,7 +35,7 @@ int main(int argc, char * argv[]) {
 
   // **** configuration
   Config cfg(argv[1]);
-  string SelectionSign=argv[3];
+  string SelectionSign="mutau";
 
   // kinematic cuts on electrons
   const Float_t ptElectronLowCut   = cfg.get<Float_t>("ptElectronLowCut");
@@ -86,7 +86,7 @@ int main(int argc, char * argv[]) {
   CutList.push_back("No cut");
   CutList.push_back("Trigger");
   CutList.push_back("$mu$");
-  CutList.push_back("$\tau_h$");
+  CutList.push_back("$tau_h$");
   CutList.push_back("2nd lept-Veto");
   CutList.push_back("3rd lept-Veto");
   CutList.push_back("b-Veto ");
@@ -125,13 +125,6 @@ int main(int argc, char * argv[]) {
 
   if (XSec<0) {cout<<" Something probably wrong with the xsecs...please check  - the input was "<<argv[2]<<endl;return 0;}
 
-
-
-
-  if (SelectionSign !="mutau" && SelectionSign !="mtau") {
-    cout <<" Wrong selection...you should use mutau as input "<<endl;
-    SelectionSign="mutau";
-  }       
 
 
 	
@@ -262,7 +255,8 @@ int main(int argc, char * argv[]) {
       Double_t EvWeight = 1.0;
       EvWeight *= weight ;
       
-      FillMainHists(iCut, EvWeight, ElMV, MuMV, JetsMV,METV, analysisTree);
+      vector <string> ss; ss.push_back(SelectionSign.c_str());
+      FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV,JetsMV,METV, analysisTree, SelectionSign);
       CFCounter[iCut]+= weight;
       iCFCounter[iCut]++;
       iCut++;
@@ -321,15 +315,16 @@ int main(int argc, char * argv[]) {
       for (int i=0; i<kMaxhltriggerresults; ++i) {
 	//if ((i==5||i==6)&&  analysisTree.hltriggerresults_second[i]==1) {
 //	if ((i==0 || i==2)&&  analysisTree.hltriggerresults_second[i]==1) {
-	if ( i==1  &&  analysisTree.hltriggerresults_second[i]==1) {
-	  //  	  std::cout << analysisTree.run_hltnames->at(i) << " : " << analysisTree.hltriggerresults_second[i] << std::endl;
+	if (  (i==0 || i==1 )  &&  analysisTree.hltriggerresults_second[i]==1) {
+	 //   	  std::cout << analysisTree.run_hltnames->at(i) << " : " << analysisTree.hltriggerresults_second[i] << std::endl;
 	  trigAccept = true;
 	}
       }
       if (!trigAccept) continue;
 
       //Trigger
-      FillMainHists(iCut, EvWeight, ElMV, MuMV, JetsMV,METV,analysisTree);
+      //FillMainHists(iCut, EvWeight, ElMV, MuMV, JetsMV,METV,analysisTree, SelectionSign);
+      FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV,JetsMV,METV, analysisTree, SelectionSign);
       CFCounter[iCut]+= weight;
       iCFCounter[iCut]++;
       iCut++;
@@ -373,7 +368,8 @@ int main(int argc, char * argv[]) {
       
       mu_index=muons[0];
 
-      FillMainHists(iCut, EvWeight, ElMV, MuMV, JetsMV,METV, analysisTree);
+      //FillMainHists(iCut, EvWeight, ElMV, MuMV, JetsMV,METV, analysisTree, SelectionSign);
+      FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV,JetsMV,METV, analysisTree, SelectionSign);
       CFCounter[iCut]+= weight;
       iCFCounter[iCut]++;
       iCut++;
@@ -397,7 +393,7 @@ int main(int argc, char * argv[]) {
 
 
       }
-      FillMainHists(iCut, EvWeight, ElMV, MuMV, JetsMV,METV, analysisTree);
+      FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV,JetsMV,METV, analysisTree, SelectionSign);
       CFCounter[iCut]+= weight;
       iCFCounter[iCut]++;
       iCut++;
@@ -407,7 +403,7 @@ int main(int argc, char * argv[]) {
       if (doMuVeto){
      	if (analysisTree.muon_count>0){
 	  for (unsigned int imv = 0; imv<analysisTree.muon_count; ++imv) {
-       if ( imv != mu_index  ){
+       if ( imv != mu_index ){
 
 	    Float_t neutralIso = 
 	      analysisTree.muon_neutralHadIso[imv] + 
@@ -427,7 +423,7 @@ int main(int argc, char * argv[]) {
 }
       if (MuVeto) continue;
 
-      FillMainHists(iCut, EvWeight, ElMV, MuMV, JetsMV,METV, analysisTree);
+      FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV,JetsMV,METV, analysisTree, SelectionSign);
       CFCounter[iCut]+= weight;
       iCFCounter[iCut]++;
       iCut++;
@@ -477,7 +473,7 @@ int main(int argc, char * argv[]) {
     	if (ThirdLeptVeto) continue;
 
 
-      FillMainHists(iCut, EvWeight, ElMV, MuMV, JetsMV,METV, analysisTree);
+      FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV,JetsMV,METV, analysisTree, SelectionSign);
       CFCounter[iCut]+= weight;
       iCFCounter[iCut]++;
       iCut++;
@@ -521,10 +517,10 @@ int main(int argc, char * argv[]) {
 	if (analysisTree.pfjet_btag[ib][6]  > bTag) btagged = true;
 	//cout<<" pfjet_b "<<ib<<"  "<<analysisTree.pfjet_btag[ib][6]<<endl;
       }
-      if (btagged) continue;
+      if (btagged ||  JetsMV.size() >3) continue;
 
       // Jets
-      FillMainHists(iCut, EvWeight, ElMV, MuMV, JetsMV,METV, analysisTree);
+      FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV,JetsMV,METV, analysisTree, SelectionSign);
       CFCounter[iCut]+= weight;
       iCFCounter[iCut]++;
       iCut++;
@@ -551,13 +547,13 @@ int main(int argc, char * argv[]) {
       // MtH->Fill(MT,weight);
       
       if (ETmiss < metcut) continue;
-      FillMainHists(iCut, EvWeight, ElMV, MuMV, JetsMV,METV, analysisTree);
+      FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV,JetsMV,METV, analysisTree, SelectionSign);
       CFCounter[iCut]+= weight;
       iCFCounter[iCut]++;
       iCut++;
        
       if (ETmiss < 2*metcut) continue;
-      FillMainHists(iCut, EvWeight, ElMV, MuMV, JetsMV,METV, analysisTree);
+      FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV,JetsMV,METV, analysisTree, SelectionSign);
       CFCounter[iCut]+= weight;
       iCFCounter[iCut]++;
       iCut++;
@@ -566,7 +562,7 @@ int main(int argc, char * argv[]) {
       //if (DZeta<dZetaCut) continue;
       if (dPhi>1) continue; 
        
-      FillMainHists(iCut, EvWeight, ElMV, MuMV, JetsMV,METV, analysisTree);
+      FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV,JetsMV,METV, analysisTree, SelectionSign);
       CFCounter[iCut]+= weight;
       iCFCounter[iCut]++;
       iCut++;

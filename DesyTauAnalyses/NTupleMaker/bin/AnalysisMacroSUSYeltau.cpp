@@ -35,7 +35,7 @@ int main(int argc, char * argv[]) {
 
   // **** configuration
   Config cfg(argv[1]);
-  string SelectionSign=argv[3];
+  string SelectionSign="eltau";
 
   // kinematic cuts on electrons
   const Float_t ptElectronLowCut   = cfg.get<Float_t>("ptElectronLowCut");
@@ -86,7 +86,7 @@ int main(int argc, char * argv[]) {
   CutList.push_back("No cut");
   CutList.push_back("Trigger");
   CutList.push_back("$\e$");
-  CutList.push_back("$\tau_h$");
+  CutList.push_back("$tau_h$");
   CutList.push_back("2nd lept-Veto");
   CutList.push_back("3rd lept-Veto");
   CutList.push_back("b-Veto ");
@@ -126,12 +126,6 @@ int main(int argc, char * argv[]) {
   if (XSec<0) {cout<<" Something probably wrong with the xsecs...please check  - the input was "<<argv[2]<<endl;return 0;}
 
 
-
-
-  if (SelectionSign !="eltau" && SelectionSign !="eltau") {
-    cout <<" Wrong selection...you should use 1l as input "<<endl;
-    SelectionSign="eltau";
-  }       
 
 
 	
@@ -262,7 +256,7 @@ int main(int argc, char * argv[]) {
       Double_t EvWeight = 1.0;
       EvWeight *= weight ;
       
-      FillMainHists(iCut, EvWeight, ElMV, MuMV, JetsMV,METV, analysisTree);
+      FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV,JetsMV,METV, analysisTree, SelectionSign);
       CFCounter[iCut]+= weight;
       iCFCounter[iCut]++;
       iCut++;
@@ -319,17 +313,17 @@ int main(int argc, char * argv[]) {
       bool trigAccept = false;
 
       for (int i=0; i<kMaxhltriggerresults; ++i) {
-	//if ((i==5||i==6)&&  analysisTree.hltriggerresults_second[i]==1) {
-//	if ((i==0 || i==2)&&  analysisTree.hltriggerresults_second[i]==1) {
-	if ( i==1  &&  analysisTree.hltriggerresults_second[i]==1) {
-	  //  	  std::cout << analysisTree.run_hltnames->at(i) << " : " << analysisTree.hltriggerresults_second[i] << std::endl;
+	//  for muel if ((i==5||i==6)&&  analysisTree.hltriggerresults_second[i]==1) {
+//for mutau	if ((i==0 || i==2)&&  analysisTree.hltriggerresults_second[i]==1) {
+	if ( ( i==2 || i==3)  &&  analysisTree.hltriggerresults_second[i]==1) {
+	//    	  std::cout << analysisTree.run_hltnames->at(i) << " : " << analysisTree.hltriggerresults_second[i] << std::endl;
 	  trigAccept = true;
 	}
       }
       if (!trigAccept) continue;
 
       //Trigger
-      FillMainHists(iCut, EvWeight, ElMV, MuMV, JetsMV,METV,analysisTree);
+      FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV,JetsMV,METV,analysisTree, SelectionSign);
       CFCounter[iCut]+= weight;
       iCFCounter[iCut]++;
       iCut++;
@@ -337,7 +331,7 @@ int main(int argc, char * argv[]) {
       MuMV.clear();
       ElMV.clear();
       // electron selection
-      unsigned int mu_index=-1;
+      //unsigned int mu_index=-1;
       unsigned int el_index=-1;
 
 
@@ -368,27 +362,27 @@ int main(int argc, char * argv[]) {
         ElMV.push_back(ElV);
 	LeptMV.push_back(ElV);
         //hel_miniISO[1]->Fill(analysisTree.electron_miniISO[ie],weight);
-      if (LeptMV.size() == 0 ) continue; 
       }
 
-      el_index=electrons[0];
+      sort(LeptMV.begin(), LeptMV.end(),ComparePt);
+      if (LeptMV.size() == 0 ) continue; 
 
-      FillMainHists(iCut, EvWeight, ElMV, MuMV, JetsMV,METV, analysisTree);
+       el_index=electrons[0];
+
+      FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV,JetsMV,METV, analysisTree, SelectionSign);
       CFCounter[iCut]+= weight;
       iCFCounter[iCut]++;
       iCut++;
 
 
-/*================================================
-in future, if needed to add cone R03 for isolation
-electron_chargedHadIso => r03_sumChargedHadronPt
-electron_neutralHadIso => r03_sumNeutralHadronEt
-electron_phostonIso => r03_sumPhotonEt
-puIso => r03_sumPUPt
+//*================================================
+//in future, if needed to add cone R03 for isolation
+//electron_chargedHadIso => r03_sumChargedHadronPt
+//electron_neutralHadIso => r03_sumNeutralHadronEt
+//electron_phostonIso => r03_sumPhotonEt
+//puIso => r03_sumPUPt
 
-================================================
-*/
-
+//================================================
 
       vector<int> tau; tau.clear();
       for (unsigned int it = 0; it<analysisTree.tau_count; ++it) {
@@ -407,11 +401,12 @@ puIso => r03_sumPUPt
 
       }
 
-      FillMainHists(iCut, EvWeight, ElMV, MuMV, JetsMV,METV, analysisTree);
+      FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV,JetsMV,METV, analysisTree, SelectionSign);
       CFCounter[iCut]+= weight;
       iCFCounter[iCut]++;
       iCut++;
 
+/*
       bool ElVeto=false;
       if (doElVeto){
 
@@ -442,7 +437,7 @@ puIso => r03_sumPUPt
 	}
 
       if (ElVeto) continue;
-      FillMainHists(iCut, EvWeight, ElMV, MuMV, JetsMV,METV, analysisTree);
+      FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV,JetsMV,METV, analysisTree, SelectionSign);
       CFCounter[iCut]+= weight;
       iCFCounter[iCut]++;
       iCut++;
@@ -500,8 +495,8 @@ puIso => r03_sumPUPt
       }
       if (ThirdLeptVeto) continue;
 
-
-      FillMainHists(iCut, EvWeight, ElMV, MuMV, JetsMV,METV, analysisTree);
+*/
+      FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV,JetsMV,METV, analysisTree, SelectionSign);
       CFCounter[iCut]+= weight;
       iCFCounter[iCut]++;
       iCut++;
@@ -545,10 +540,10 @@ puIso => r03_sumPUPt
 	if (analysisTree.pfjet_btag[ib][6]  > bTag) btagged = true;
 	//cout<<" pfjet_b "<<ib<<"  "<<analysisTree.pfjet_btag[ib][6]<<endl;
       }
-      if (btagged) continue;
+      if (btagged || JetsMV.size()>3) continue;
 
       // Jets
-      FillMainHists(iCut, EvWeight, ElMV, MuMV, JetsMV,METV, analysisTree);
+      FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV,JetsMV,METV, analysisTree, SelectionSign);
       CFCounter[iCut]+= weight;
       iCFCounter[iCut]++;
       iCut++;
@@ -575,13 +570,13 @@ puIso => r03_sumPUPt
       // MtH->Fill(MT,weight);
       
       if (ETmiss < metcut) continue;
-      FillMainHists(iCut, EvWeight, ElMV, MuMV, JetsMV,METV, analysisTree);
+      FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV,JetsMV,METV, analysisTree, SelectionSign);
       CFCounter[iCut]+= weight;
       iCFCounter[iCut]++;
       iCut++;
        
       if (ETmiss < 2*metcut) continue;
-      FillMainHists(iCut, EvWeight, ElMV, MuMV, JetsMV,METV, analysisTree);
+      FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV,JetsMV,METV, analysisTree, SelectionSign);
       CFCounter[iCut]+= weight;
       iCFCounter[iCut]++;
       iCut++;
@@ -590,7 +585,7 @@ puIso => r03_sumPUPt
       //if (DZeta<dZetaCut) continue;
       if (dPhi>1) continue; 
        
-      FillMainHists(iCut, EvWeight, ElMV, MuMV, JetsMV,METV, analysisTree);
+      FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV,JetsMV,METV, analysisTree, SelectionSign);
       CFCounter[iCut]+= weight;
       iCFCounter[iCut]++;
       iCut++;

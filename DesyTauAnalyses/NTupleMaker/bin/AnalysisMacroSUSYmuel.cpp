@@ -41,7 +41,7 @@ int main(int argc, char * argv[]) {
 
   // **** configuration
   Config cfg(argv[1]);
-  string SelectionSign=argv[3];
+  string SelectionSign="muel";
 
   // kinematic cuts on electrons
   const float ptElectronLowCut   = cfg.get<float>("ptElectronLowCut");
@@ -127,11 +127,6 @@ int CutNumb = int(CutList.size());
 	if (XSec<0) {cout<<" Something probably wrong with the xsecs...please check  - the input was "<<argv[2]<<endl;return 0;}
 
 	
-if (SelectionSign !="OS" && SelectionSign !="SS") {
-       cout <<" Wrong selection...you should use OS or SS  as input "<<endl;
-   //    SelectionSign="2l";
-       return 1;
-}       
 
 
 
@@ -261,7 +256,7 @@ if (SelectionSign !="OS" && SelectionSign !="SS") {
       Double_t EvWeight = 1.0;
       EvWeight *= weight ;
       
-      FillMainHists(iCut, EvWeight, ElMV, MuMV, JetsMV,METV, analysisTree);
+      FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV, JetsMV,METV, analysisTree, SelectionSign);
       CFCounter[iCut]+= weight;
       iCFCounter[iCut]++;
       iCut++;
@@ -319,14 +314,14 @@ if (SelectionSign !="OS" && SelectionSign !="SS") {
 
       for (int i=0; i<kMaxhltriggerresults; ++i) {
 	if ((i==5||i==6)&&analysisTree.hltriggerresults_second[i]==1) {
-	  //	  std::cout << analysisTree.run_hltnames->at(i) << " : " << analysisTree.hltriggerresults_second[i] << std::endl;
+	//	  std::cout << analysisTree.run_hltnames->at(i) << " : " << analysisTree.hltriggerresults_second[i] << std::endl;
 	  trigAccept = true;
 	}
       }
 
       if (!trigAccept) continue;
       //Trigger
-      FillMainHists(iCut, EvWeight, ElMV, MuMV, JetsMV,METV, analysisTree);
+      FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV, JetsMV,METV, analysisTree, SelectionSign);
       CFCounter[iCut]+= weight;
       iCFCounter[iCut]++;
       iCut++;
@@ -488,7 +483,7 @@ if (SelectionSign !="OS" && SelectionSign !="SS") {
 		}
       	}/// dR cut
 
-          FillMainHists(iCut, EvWeight, ElMV, MuMV, JetsMV,METV, analysisTree);
+          FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV, JetsMV,METV, analysisTree, SelectionSign);
       	  CFCounter[iCut]+= weight;
           iCFCounter[iCut]++;
           iCut++;
@@ -504,14 +499,14 @@ if (SelectionSign !="OS" && SelectionSign !="SS") {
 	  //if (btagged) continue;
 
           // Jets
-	  FillMainHists(iCut, EvWeight, ElMV, MuMV, JetsMV,METV, analysisTree);
+	  FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV, JetsMV,METV, analysisTree, SelectionSign);
       	  CFCounter[iCut]+= weight;
           iCFCounter[iCut]++;
           iCut++;
           // pt Scalar
 	  if (SelectionSign == "OS" || SelectionSign == "SS") {
     	  if (ptScalarSum<0  ) continue;
-          FillMainHists(iCut, EvWeight, ElMV, MuMV, JetsMV,METV, analysisTree);
+          FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV, JetsMV,METV, analysisTree, SelectionSign);
       	  CFCounter[iCut]+= weight;
           iCFCounter[iCut]++;
           iCut++;
@@ -591,13 +586,13 @@ if (SelectionSign !="OS" && SelectionSign !="SS") {
       DZetaH->Fill(DZeta,weight);
 
       if (ETmiss < metcut) continue;
-          FillMainHists(iCut, EvWeight, ElMV, MuMV, JetsMV,METV, analysisTree);
+          FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV, JetsMV,METV, analysisTree, SelectionSign);
       	  CFCounter[iCut]+= weight;
           iCFCounter[iCut]++;
           iCut++;
        
        if (ETmiss < 2*metcut) continue;
-          FillMainHists(iCut, EvWeight, ElMV, MuMV, JetsMV,METV, analysisTree);
+          FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV, JetsMV,METV, analysisTree, SelectionSign);
       	  CFCounter[iCut]+= weight;
           iCFCounter[iCut]++;
           iCut++;
@@ -605,7 +600,7 @@ if (SelectionSign !="OS" && SelectionSign !="SS") {
       //if (DZeta<dZetaCut) continue;
        if (dPhi<1) continue; 
        
-          FillMainHists(iCut, EvWeight, ElMV, MuMV, JetsMV,METV, analysisTree);
+          FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV, JetsMV,METV, analysisTree, SelectionSign);
       	  CFCounter[iCut]+= weight;
           iCFCounter[iCut]++;
           iCut++;
