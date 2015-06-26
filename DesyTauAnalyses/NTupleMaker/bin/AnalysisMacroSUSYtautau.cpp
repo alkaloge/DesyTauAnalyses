@@ -22,6 +22,7 @@
 #include "TRandom.h"
 
 #include "AnalysisMacro.h"
+#include "../interface/mt2.h"
 
 int main(int argc, char * argv[]) {
 
@@ -94,7 +95,7 @@ int main(int argc, char * argv[]) {
   CutList.push_back("No cut");
   CutList.push_back("Trigger");
   CutList.push_back("$mu$");
-  CutList.push_back("$\tau_h$");
+  CutList.push_back("$tau_h$");
   CutList.push_back("2nd lept-Veto");
   CutList.push_back("3rd lept-Veto");
   CutList.push_back("b-Veto ");
@@ -341,14 +342,14 @@ int main(int argc, char * argv[]) {
       MuMV.clear();
       ElMV.clear();
       // electron selection
-      unsigned int mu_index=-1;
-      unsigned int el_index=-1;
+      unsigned int tauld_index=-1;
+      unsigned int tautr_index=-1;
 
 	vector<int> electrons; electrons.clear();
 
       // muon selection
 
-      vector<int> muons; muons.clear();
+      vector<int> muons; muons.clear();/*
       for (unsigned int im = 0; im<analysisTree.muon_count; ++im) {
 	muonPtAllH->Fill(analysisTree.muon_pt[im],weight);
 	if (analysisTree.muon_pt[im]<ptMuonHighCut) continue;
@@ -372,6 +373,9 @@ int main(int argc, char * argv[]) {
 	LeptMV.push_back(MuV);
         //hmu_miniISO[1]->Fill(analysisTree.muon_miniISO[im],weight);
       }
+      
+      mu_index=muons[0];
+
       sort(LeptMV.begin(), LeptMV.end(),ComparePt); 
       if (LeptMV.size() == 0 ) continue; 
       
@@ -381,12 +385,11 @@ int main(int argc, char * argv[]) {
       CFCounter[iCut]+= weight;
       iCFCounter[iCut]++;
       iCut++;
-
+	*/
     
 //###################### leading tau candindate #################
 
       vector<int> tauld; tauld.clear();
-      unsigned int tau_index=-1;
       for (unsigned int it = 0; it<analysisTree.tau_count; ++it) {
 	tauPtAllH->Fill(analysisTree.tau_pt[it],weight);
 	tauEtaAllH->Fill(analysisTree.tau_eta[it],weight);
@@ -405,7 +408,7 @@ int main(int argc, char * argv[]) {
 
       if (tauld.size()==0) continue;
        
-      tau_index=tauld[0];
+      tauld_index=tauld[0];
 
       FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV, JetsMV,METV, analysisTree, SelectionSign);
       CFCounter[iCut]+= weight;
@@ -416,7 +419,7 @@ int main(int argc, char * argv[]) {
       vector<int> tautr; tautr.clear();
       for (unsigned int itr = 0; itr<analysisTree.tau_count; ++itr) {
 
-	      if (itr != tau_index ){
+	      if (itr != tauld_index ){
 	if (analysisTree.tau_pt[itr] < 45 || fabs(analysisTree.tau_eta[itr])> 2.1) continue;
 	if (analysisTree.tau_decayModeFinding[itr]<decayModeFinding && analysisTree.tau_decayModeFindingNewDMs[itr]<decayModeFindingNewDMs) continue;
 	if (analysisTree.tau_againstElectronVLooseMVA5[itr]<againstElectronVLooseMVA5) continue;
@@ -430,7 +433,42 @@ int main(int argc, char * argv[]) {
       }
 
       if (tautr.size()==0) continue;
+  
+      tautr_index=tauld[0];
+/*
+cout<<" "<<TauMV.size()<<endl;
+if (TauMV.size()>1){
 
+double mVisA = TauMV[0].M(); // mass of visible object on side A.  Must be >=0.
+double pxA = TauMV[0].Px(); // x momentum of visible object on side A.
+double pyA = TauMV[0].Py(); // y momentum of visible object on side A.
+
+double mVisB = TauMV[1].M(); // mass of visible object on side B.  Must be >=0.
+double pxB = TauMV[1].Px(); // x momentum of visible object on side B.
+double pyB = TauMV[1].Py(); // y momentum of visible object on side B.
+
+double pxMiss = analysisTree.pfmet_ex; // x component of missing transverse momentum.
+double pyMiss = analysisTree.pfmet_ey; // y component of missing transverse momentum.
+
+double chiA = 0; // hypothesised mass of invisible on side A.  Must be >=0.
+double chiB = 0; // hypothesised mass of invisible on side B.  Must be >=0.
+
+double desiredPrecisionOnMt2 = 0; // Must be >=0.  If 0 alg aims for machine precision.  if >0, MT2 computed to supplied absolute precision.
+
+// asymm_mt2_lester_bisect::disableCopyrightMessage();
+
+double MT2 =  asymm_mt2_lester_bisect::get_mT2(
+           mVisA, pxA, pyA,
+           mVisB, pxB, pyB,
+           pxMiss, pyMiss,
+           chiA, chiB,
+           desiredPrecisionOnMt2);
+
+
+cout<<" MT2 here "<<MT2<<endl;
+
+}
+*/
 
 
       bool MuVeto=false;
@@ -438,7 +476,6 @@ int main(int argc, char * argv[]) {
       if (doMuVeto){
      	if (analysisTree.muon_count>0){
 	  for (unsigned int imv = 0; imv<analysisTree.muon_count; ++imv) {
-       if ( imv != mu_index  ){
 
 	    Float_t neutralIso = 
 	      analysisTree.muon_neutralHadIso[imv] + 
@@ -447,12 +484,11 @@ int main(int argc, char * argv[]) {
 	    neutralIso = TMath::Max(Float_t(0),neutralIso); 
 	    Float_t absIso = analysisTree.muon_chargedHadIso[imv] + neutralIso;
 	    Float_t relIso = absIso/analysisTree.muon_pt[imv];
-	    if ( analysisTree.muon_charge[imv] != analysisTree.muon_charge[mu_index] &&  analysisTree.muon_isGlobal[imv] && analysisTree.muon_isTracker[imv] && analysisTree.muon_isPF[imv]  
+	    if ( analysisTree.muon_isGlobal[imv] && analysisTree.muon_isTracker[imv] && analysisTree.muon_isPF[imv]  
 		 &&  analysisTree.muon_pt[imv]> 15 &&  fabs(analysisTree.muon_eta[imv])< 2.4 && fabs(analysisTree.muon_dxy[imv])<0.045 
 		 && fabs(analysisTree.muon_dz[imv] < 0.2 && relIso< 0.3 && analysisTree.muon_isMedium[imv]) )
 	
 	      MuVeto=true;
-	  }
 	}
       }
 }
@@ -462,7 +498,6 @@ int main(int argc, char * argv[]) {
       CFCounter[iCut]+= weight;
       iCFCounter[iCut]++;
       iCut++;
-
 
 
       bool ThirdLeptVeto=false;
@@ -483,7 +518,6 @@ int main(int argc, char * argv[]) {
 
 	    if ( analysisTree.electron_pt[iev] > 10 &&  fabs(analysisTree.electron_eta[iev]) < 2.5 && fabs(analysisTree.electron_dxy[iev])<0.045
 		&& fabs(analysisTree.electron_dz[iev]) < 0.2 && relIsoV< 0.3 && ElVetoID) ThirdLeptVeto=true;
-
 	  }
 	}
 
@@ -499,7 +533,7 @@ int main(int argc, char * argv[]) {
 	    neutralIso = TMath::Max(Float_t(0),neutralIso); 
 	    Float_t absIso = analysisTree.muon_chargedHadIso[imvv] + neutralIso;
 	    Float_t relIso = absIso/analysisTree.muon_pt[imvv];
-	    if ( imvv != mu_index &&  analysisTree.muon_isMedium[imvv] &&  analysisTree.muon_pt[imvv]> 10 &&  fabs(analysisTree.muon_eta[imvv])< 2.4 && fabs(analysisTree.muon_dxy[imvv])<0.045 
+	    if ( analysisTree.muon_isMedium[imvv] &&  analysisTree.muon_pt[imvv]> 10 &&  fabs(analysisTree.muon_eta[imvv])< 2.4 && fabs(analysisTree.muon_dxy[imvv])<0.045 
 		 && fabs(analysisTree.muon_dz[imvv] < 0.2 && relIso< 0.3 && analysisTree.muon_isMedium[imvv]) ) ThirdLeptVeto=true;
 	 	 }
 		}

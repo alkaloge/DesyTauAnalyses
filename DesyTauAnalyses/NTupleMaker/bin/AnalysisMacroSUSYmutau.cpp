@@ -331,9 +331,10 @@ int main(int argc, char * argv[]) {
       /////now clear the Mu.El.Jets again to fill them again after cleaning
       MuMV.clear();
       ElMV.clear();
+      TauMV.clear();
       // electron selection
       unsigned int mu_index=-1;
-      unsigned int el_index=-1;
+      unsigned int tau_index=-1;
 
 	vector<int> electrons; electrons.clear();
 
@@ -388,15 +389,25 @@ int main(int argc, char * argv[]) {
 	if (analysisTree.tau_againstMuonTight3[it]<againstMuonTight3) continue;
 	if ( fabs(analysisTree.tau_vertexz[it] - analysisTree.primvertex_z ) > vertexz ) continue;
 	if (analysisTree.tau_byCombinedIsolationDeltaBetaCorrRaw3Hits[it] > byCombinedIsolationDeltaBetaCorrRaw3Hits ) continue;
-       
+
+	TauV.SetPtEtaPhiM(analysisTree.tau_pt[it], analysisTree.tau_eta[it], analysisTree.tau_phi[it], tauMass);
+	TauMV.push_back(TauV);
 	tau.push_back(it);
 
 
       }
+      tau_index=tau[0];
       FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV,JetsMV,METV, analysisTree, SelectionSign);
       CFCounter[iCut]+= weight;
       iCFCounter[iCut]++;
       iCut++;
+
+	  
+      float dR = deltaR(analysisTree.electron_eta[muons[0]],analysisTree.electron_phi[muons[0]],
+			    analysisTree.muon_eta[tau[0]],analysisTree.muon_phi[tau[0]]);
+
+      if (dR<dRleptonsCut) continue;
+
 
       bool MuVeto=false;
 
