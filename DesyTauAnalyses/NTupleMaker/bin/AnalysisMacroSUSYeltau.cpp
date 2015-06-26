@@ -331,8 +331,8 @@ int main(int argc, char * argv[]) {
       MuMV.clear();
       ElMV.clear();
       // electron selection
-      //unsigned int mu_index=-1;
       unsigned int el_index=-1;
+      unsigned int tau_index=-1;
 
 
 
@@ -395,18 +395,22 @@ int main(int argc, char * argv[]) {
 	if (analysisTree.tau_againstMuonTight3[it]<againstMuonTight3) continue;
 	if ( fabs(analysisTree.tau_vertexz[it] - analysisTree.primvertex_z ) > vertexz ) continue;
 	if (analysisTree.tau_byCombinedIsolationDeltaBetaCorrRaw3Hits[it] > byCombinedIsolationDeltaBetaCorrRaw3Hits ) continue;
-       
 	tau.push_back(it);
 
 
       }
+
+      tau_index=tau[0];
 
       FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV,JetsMV,METV, analysisTree, SelectionSign);
       CFCounter[iCut]+= weight;
       iCFCounter[iCut]++;
       iCut++;
 
-/*
+      float dR = deltaR(analysisTree.electron_eta[electrons[0]],analysisTree.electron_phi[electrons[0]],
+			    analysisTree.muon_eta[tau[0]],analysisTree.muon_phi[tau[0]]);
+
+      if (dR<dRleptonsCut) continue;
       bool ElVeto=false;
       if (doElVeto){
 
@@ -429,7 +433,7 @@ int main(int argc, char * argv[]) {
 			     analysisTree.electron_ehcaloverecal[ievv],  analysisTree.electron_dxy[ievv], analysisTree.electron_dz[ievv], analysisTree.electron_ooemoop[ievv],
 			     relIsoV,analysisTree.electron_nmissinginnerhits[ievv],analysisTree.electron_pass_conversion[ievv]);
 
-	    if ( analysisTree.electron_charge[ievv] != analysisTree.electron_charge[el_index] && analysisTree.electron_pt[ievv] > 15 &&  fabs(analysisTree.electron_eta[ievv]) < 2.5 && fabs(analysisTree.electron_dxy[ievv])<0.045
+	    if ( analysisTree.electron_charge[ievv] != analysisTree.electron_charge[electrons[0]] && analysisTree.electron_pt[ievv] > 15 &&  fabs(analysisTree.electron_eta[ievv]) < 2.5 && fabs(analysisTree.electron_dxy[ievv])<0.045
 		&& fabs(analysisTree.electron_dz[ievv]) < 0.2 && relIsoV< 0.3 && ElVetoID) 
 		    ElVeto=true;
 		  	}
@@ -476,7 +480,6 @@ int main(int argc, char * argv[]) {
 
      	if (analysisTree.muon_count>0){
 	  for (unsigned int imvv = 0; imvv<analysisTree.muon_count; ++imvv) {
-		if (imvv != mu_index ) {
 	    Float_t neutralIso = 
 	      analysisTree.muon_neutralHadIso[imvv] + 
 	      analysisTree.muon_photonIso[imvv] - 
@@ -484,18 +487,18 @@ int main(int argc, char * argv[]) {
 	    neutralIso = TMath::Max(Float_t(0),neutralIso); 
 	    Float_t absIso = analysisTree.muon_chargedHadIso[imvv] + neutralIso;
 	    Float_t relIso = absIso/analysisTree.muon_pt[imvv];
-	    if ( imvv != mu_index &&  analysisTree.muon_isMedium[imvv] &&  analysisTree.muon_pt[imvv]> 10 &&  fabs(analysisTree.muon_eta[imvv])< 2.4 && fabs(analysisTree.muon_dxy[imvv])<0.045 
+	    if ( analysisTree.muon_isMedium[imvv] &&  analysisTree.muon_pt[imvv]> 10 &&  fabs(analysisTree.muon_eta[imvv])< 2.4 && fabs(analysisTree.muon_dxy[imvv])<0.045 
 		 && fabs(analysisTree.muon_dz[imvv] < 0.2 && relIso< 0.3 && analysisTree.muon_isMedium[imvv]) )
 	
 	      ThirdLeptVeto=true;
-	  }
 	}
 
       }
       }
       if (ThirdLeptVeto) continue;
 
-*/
+
+
       FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV,JetsMV,METV, analysisTree, SelectionSign);
       CFCounter[iCut]+= weight;
       iCFCounter[iCut]++;
