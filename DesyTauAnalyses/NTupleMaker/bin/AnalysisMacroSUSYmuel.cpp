@@ -41,7 +41,7 @@ int main(int argc, char * argv[]) {
 
   // **** configuration
   Config cfg(argv[1]);
-  string SelectionSign="muel";
+  string SelectionSign=argv[3];
 
   // kinematic cuts on electrons
   const float ptElectronLowCut   = cfg.get<float>("ptElectronLowCut");
@@ -490,7 +490,6 @@ int CutNumb = int(CutList.size());
           iCFCounter[iCut]++;
           iCut++;
 	
-	  //if (JetsMV.size()<3) continue;
 
 
  	  bool btagged= false;
@@ -498,7 +497,8 @@ int CutNumb = int(CutList.size());
             if (analysisTree.pfjet_btag[ib][6]  > bTag) btagged = true;
   		  //cout<<" pfjet_b "<<ib<<"  "<<analysisTree.pfjet_btag[ib][6]<<endl;
 	  }
-	  //if (btagged) continue;
+	  
+	  if (btagged || JetsMV.size()>3) continue;
 
           // Jets
 	  FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV, JetsMV,METV, analysisTree, SelectionSign);
@@ -506,13 +506,12 @@ int CutNumb = int(CutList.size());
           iCFCounter[iCut]++;
           iCut++;
           // pt Scalar
-	  if (SelectionSign == "OS" || SelectionSign == "SS") {
-    	  if (ptScalarSum<0  ) continue;
+    	
+	  if (ptScalarSum<0  ) continue;
           FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV, JetsMV,METV, analysisTree, SelectionSign);
       	  CFCounter[iCut]+= weight;
           iCFCounter[iCut]++;
           iCut++;
-	  }
       // computations of kinematic variables
 
       TLorentzVector muonLV; muonLV.SetXYZM(analysisTree.muon_px[muonIndex],

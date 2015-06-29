@@ -397,17 +397,18 @@ int main(int argc, char * argv[]) {
 
       }
       tau_index=tau[0];
+
+
       FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV,JetsMV,METV, analysisTree, SelectionSign);
       CFCounter[iCut]+= weight;
       iCFCounter[iCut]++;
       iCut++;
 
-	  
-      float dR = deltaR(analysisTree.electron_eta[muons[0]],analysisTree.electron_phi[muons[0]],
+      if (tau.size()==0 || muons.size()==0) continue;
+      float dR = deltaR(analysisTree.tau_eta[tau_index],analysisTree.tau_phi[tau_index],
 			    analysisTree.muon_eta[tau[0]],analysisTree.muon_phi[tau[0]]);
 
       if (dR<dRleptonsCut) continue;
-
 
       bool MuVeto=false;
 
