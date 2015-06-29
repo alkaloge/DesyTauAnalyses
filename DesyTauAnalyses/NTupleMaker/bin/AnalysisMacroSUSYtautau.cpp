@@ -22,7 +22,7 @@
 #include "TRandom.h"
 
 #include "AnalysisMacro.h"
-#include "../interface/mt2.h"
+#include "DesyTauAnalyses/NTupleMaker/interface/mt2.h"
 
 int main(int argc, char * argv[]) {
 
@@ -94,8 +94,8 @@ int main(int argc, char * argv[]) {
   CutList.clear();
   CutList.push_back("No cut");
   CutList.push_back("Trigger");
-  CutList.push_back("$mu$");
-  CutList.push_back("$tau_h$");
+  CutList.push_back("$Ld tau$");
+  CutList.push_back("$Trail tau$");
   CutList.push_back("2nd lept-Veto");
   CutList.push_back("3rd lept-Veto");
   CutList.push_back("b-Veto ");
@@ -410,11 +410,11 @@ int main(int argc, char * argv[]) {
        
       tauld_index=tauld[0];
 
+
       FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV, JetsMV,METV, analysisTree, SelectionSign);
       CFCounter[iCut]+= weight;
       iCFCounter[iCut]++;
       iCut++;
-
 
       vector<int> tautr; tautr.clear();
       for (unsigned int itr = 0; itr<analysisTree.tau_count; ++itr) {
@@ -434,7 +434,17 @@ int main(int argc, char * argv[]) {
 
       if (tautr.size()==0) continue;
   
-      tautr_index=tauld[0];
+      tautr_index=tautr[0];
+
+float dR = deltaR(analysisTree.tau_eta[tauld_index],analysisTree.tau_phi[tauld_index],
+                            analysisTree.tau_eta[tautr_index],analysisTree.tau_phi[tautr_index]);
+
+      if (dR<dRleptonsCut) continue;
+
+      FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV, JetsMV,METV, analysisTree, SelectionSign);
+      CFCounter[iCut]+= weight;
+      iCFCounter[iCut]++;
+      iCut++;
 /*
 cout<<" "<<TauMV.size()<<endl;
 if (TauMV.size()>1){
@@ -586,7 +596,7 @@ cout<<" MT2 here "<<MT2<<endl;
 	if (analysisTree.pfjet_btag[ib][6]  > bTag) btagged = true;
 	//cout<<" pfjet_b "<<ib<<"  "<<analysisTree.pfjet_btag[ib][6]<<endl;
       }
-      if (btagged) continue;
+      if (btagged || JetsMV.size() > 3) continue;
 
       // Jets
       FillMainHists(iCut, EvWeight, ElMV, MuMV, TauMV, JetsMV,METV, analysisTree, SelectionSign);
