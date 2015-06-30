@@ -23,8 +23,8 @@ TH1F * TH1toTH1(TH1F * histo, int nBinsX, float * xBins, bool setErr,TString suf
     newHisto->SetBinContent(binX,content);
     if (setErr)
       newHisto->SetBinError(binX,error); 
-    else 
-      newHisto->SetBinError(binX,0);
+    //    else 
+    //      newHisto->SetBinError(binX,0);
   }
 
   return newHisto;
