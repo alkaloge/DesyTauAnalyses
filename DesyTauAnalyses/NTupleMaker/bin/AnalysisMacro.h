@@ -10,7 +10,7 @@ const Float_t tauMass = 1.776;
 const Float_t electronMass = 0;
 const Float_t muonMass = 0.10565837;
 const Float_t pionMass = 0.1396;
-const  int CutN=10;
+const  int CutN=15;
 
 Float_t XSec=-1;
 Float_t xs,fact,fact2;
@@ -445,16 +445,18 @@ void SetupHists(int CutNer){
 
         hmu_miniISO[cj]= new TH1D ("muminiISO_"+nCut,"muminiISO "+cutName,50,0,5);;
         hmu_miniISO[cj]->Sumw2();
-        hmu_miniISOL[cj]= new TH1D ("muminiISOL_"+nCut,"muminiISOL "+cutName,50,0,5);;
+    	hmu_miniISOL[cj]= new TH1D ("muminiISOL_"+nCut,"muminiISOL "+cutName,50,0,5);;
         hmu_miniISOL[cj]->Sumw2();
 
-        hel_relISO[cj]= new TH1D ("elrelISOL_"+nCut,"elrelISO "+cutName,50,0,5);;
+        hel_relISO[cj]= new TH1D ("elrelISO_"+nCut,"elrelISO "+cutName,50,0,5);;
         hel_relISO[cj]->Sumw2();
-        hmu_relISO[cj]= new TH1D ("murelISOL_"+nCut,"murelISO "+cutName,50,0,5);;
+	hmu_relISOL[cj]= new TH1D ("elrelISOL_"+nCut,"murelISOL "+cutName,50,0,5);;
+        hmu_relISOL[cj]->Sumw2();
+        
+        
+	hmu_relISO[cj]= new TH1D ("murelISO_"+nCut,"murelISO "+cutName,50,0,5);;
         hmu_relISO[cj]->Sumw2();
-        hel_relISOL[cj]= new TH1D ("elrelISOL_"+nCut,"elrelISO "+cutName,50,0,5);;
-        hel_relISOL[cj]->Sumw2();
-        hmu_relISOL[cj]= new TH1D ("murelISOL_"+nCut,"murelISO "+cutName,50,0,5);;
+	hmu_relISOL[cj]= new TH1D ("murelISOL_"+nCut,"murelISOL "+cutName,50,0,5);;
         hmu_relISOL[cj]->Sumw2();
  
  	hdR_eltau[cj]= new TH1D ("dR_eltau_"+nCut,"dR_eltau "+cutName,60,0,6);;
@@ -489,11 +491,11 @@ void SetupHists(int CutNer){
 
 
  
-	hMT_dPhi[cj]= new TH2D ("MT_dPhi"+nCut,"MT_dPhi "+cutName,40,0,200,64,0.0,3.2);
+	hMT_dPhi[cj]= new TH2D ("MT_dPhi_"+nCut,"MT_dPhi "+cutName,40,0,200,64,0.0,3.2);
 	hMT_dPhi[cj]->Sumw2();
-        hMT_dPhiel[cj]= new TH2D ("MTel_dPhi"+nCut,"MTel_dPhi "+cutName,40,0,200,64,0.0,3.2);
+        hMT_dPhiel[cj]= new TH2D ("MTel_dPhi_"+nCut,"MTel_dPhi "+cutName,40,0,200,64,0.0,3.2);
 	hMT_dPhiel[cj]->Sumw2();
-        hMT_dPhimu[cj]= new TH2D ("MTmu_dPhi"+nCut,"MTmu_dPhi "+cutName,40,0,200,64,0.0,3.2);
+        hMT_dPhimu[cj]= new TH2D ("MTmu_dPhi_"+nCut,"MTmu_dPhi "+cutName,40,0,200,64,0.0,3.2);
 	hMT_dPhimu[cj]->Sumw2();
 
     }
@@ -506,6 +508,8 @@ void FillMainHists(int CutIndex, Double_t EvWeight, vector<TLorentzVector>  ElV,
 	hnJet[CutIndex]->Fill(JetsV.size(),EvWeight);
         hnMu[CutIndex]->Fill(MuV.size(),EvWeight);
         hnTau[CutIndex]->Fill(TauV.size(),EvWeight);
+        hnEl[CutIndex]->Fill(ElV.size(),EvWeight);
+        hnLep[CutIndex]->Fill(ElV.size()+MuV.size()+TauV.size(),EvWeight);
    //     if (JetsV.size() > 0) h0JetpT[CutIndex]->Fill(JetsV.at(0).Pt(),EvWeight);
   //  if(FillBJets){
   //      hnBJet[CutIndex]->Fill(Obj.nBJetGood,EvWeight);
@@ -530,11 +534,8 @@ void FillMainHists(int CutIndex, Double_t EvWeight, vector<TLorentzVector>  ElV,
       
 	if (ElV.size() > 0)
     {
-     hnEl[CutIndex]->Fill(ElV.size(),EvWeight);
      hElpt[CutIndex]->Fill(ElV.at(0).Pt(),EvWeight);
      hEleta[CutIndex]->Fill(ElV.at(0).Eta(),EvWeight);
- 
-     hnLep[CutIndex]->Fill(ElV.size(),EvWeight);
 
      Float_t dPhi=dPhiFrom2P( ElV.at(0).Px(), ElV.at(0).Py(), MetV.Px(),  MetV.Py() );
      hdPhiMETLep[CutIndex]->Fill(dPhi,EvWeight);
@@ -589,11 +590,9 @@ void FillMainHists(int CutIndex, Double_t EvWeight, vector<TLorentzVector>  ElV,
     if (MuV.size() > 0)
     {
      TLorentzVector WBos = MetV + MuV.at(0);
-     hnMu[CutIndex]->Fill(MuV.size(),EvWeight);
      hMupt[CutIndex]->Fill(MuV.at(0).Pt(),EvWeight);
      hMueta[CutIndex]->Fill(MuV.at(0).Eta(),EvWeight);
   
-     hnLep[CutIndex]->Fill(MuV.size(),EvWeight);
 
      Float_t dPhi=dPhiFrom2P( MuV.at(0).Px(), MuV.at(0).Py(), MetV.Px(),  MetV.Py() );
      hdPhiMETLep[CutIndex]->Fill(dPhi,EvWeight);
@@ -649,7 +648,6 @@ void FillMainHists(int CutIndex, Double_t EvWeight, vector<TLorentzVector>  ElV,
     }
     if (TauV.size() > 0)
     {
-     hnLep[CutIndex]->Fill(TauV.size(),EvWeight);
      hTaupt[CutIndex]->Fill(TauV.at(0).Pt(),EvWeight);
      hTaueta[CutIndex]->Fill(TauV.at(0).Eta(),EvWeight);
 
