@@ -39,6 +39,7 @@ TH1D *hLepeta[CutN];
 TH1D *hnMu[CutN];
 TH1D *hMupt[CutN];
 TH1D *hMueta[CutN];
+
 TH1D *hmu_relISO[CutN];
 TH1D *hmu_relISOL[CutN];
 TH1D *hmu_miniISO[CutN];
@@ -443,17 +444,17 @@ void SetupHists(int CutNer){
         hel_miniISOL[cj]= new TH1D ("elminiISOL_"+nCut,"elminiISOL "+cutName,50,0,5);;
         hel_miniISOL[cj]->Sumw2();
 
+        hel_relISO[cj]= new TH1D ("elrelISO_"+nCut,"elrelISO "+cutName,50,0,5);;
+        hel_relISO[cj]->Sumw2();
+	hel_relISOL[cj]= new TH1D ("elrelISOL_"+nCut,"murelISOL "+cutName,50,0,5);;
+        hel_relISOL[cj]->Sumw2();
+        
+        
         hmu_miniISO[cj]= new TH1D ("muminiISO_"+nCut,"muminiISO "+cutName,50,0,5);;
         hmu_miniISO[cj]->Sumw2();
     	hmu_miniISOL[cj]= new TH1D ("muminiISOL_"+nCut,"muminiISOL "+cutName,50,0,5);;
         hmu_miniISOL[cj]->Sumw2();
 
-        hel_relISO[cj]= new TH1D ("elrelISO_"+nCut,"elrelISO "+cutName,50,0,5);;
-        hel_relISO[cj]->Sumw2();
-	hmu_relISOL[cj]= new TH1D ("elrelISOL_"+nCut,"murelISOL "+cutName,50,0,5);;
-        hmu_relISOL[cj]->Sumw2();
-        
-        
 	hmu_relISO[cj]= new TH1D ("murelISO_"+nCut,"murelISO "+cutName,50,0,5);;
         hmu_relISO[cj]->Sumw2();
 	hmu_relISOL[cj]= new TH1D ("murelISOL_"+nCut,"murelISOL "+cutName,50,0,5);;
