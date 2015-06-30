@@ -698,7 +698,21 @@ int main(int argc, char * argv[]) {
 	  }
 
 	  bool trigMatch = (isMu23&&isEle12) || (isMu8&&isEle23);
+
 	  if (!trigMatch) continue;
+	  
+	  bool isKinematicMatch = false;
+	  if (isMu23&&isEle12) {
+	    if (analysisTree.muon_pt[mIndex]>ptMuonHighCut&&analysisTree.electron_pt[eIndex]>ptElectronLowCut)
+	      isKinematicMatch = true;
+	  }
+	  if (isMu8&&isEle23) {
+            if (analysisTree.muon_pt[mIndex]>ptMuonLowCut&&analysisTree.electron_pt[eIndex]>ptElectronHighCut)
+              isKinematicMatch = true;
+          }
+	  if (!isKinematicMatch) continue;
+
+
 	  float neutralHadIsoEle = analysisTree.electron_neutralHadIso[eIndex];
 	  float photonIsoEle = analysisTree.electron_photonIso[eIndex];
 	  float chargedHadIsoEle = analysisTree.electron_chargedHadIso[eIndex];
